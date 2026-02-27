@@ -1,0 +1,948 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scamsniffer - Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { min-height: 100vh; overflow-x: hidden; }
+
+    :root {
+      --bg:             #04060f;
+      --bg2:            #070b18;
+      --nav-bg:         rgba(4,6,15,0.92);
+      --card-bg:        rgba(10,16,36,0.75);
+      --card-bg-solid:  #0a1224;
+      --card-border:    rgba(59,130,246,0.14);
+      --card-hover:     rgba(59,130,246,0.28);
+      --text:           #e8edf8;
+      --text-sub:       #64748b;
+      --text-faint:     #1e3a5f;
+      --accent:         #3b82f6;
+      --accent2:        #60a5fa;
+      --accent-glow:    rgba(59,130,246,0.12);
+      --grid:           rgba(59,130,246,0.04);
+      --divider:        rgba(59,130,246,0.09);
+      --menu-bg:        #07091a;
+      --menu-border:    rgba(59,130,246,0.14);
+      --toggle-bg:      rgba(255,255,255,0.06);
+      --toggle-border:  rgba(255,255,255,0.1);
+      --toggle-color:   #94a3b8;
+      --pill:           rgba(59,130,246,0.25);
+      --knob:           #60a5fa;
+      --knob-x:         3px;
+      --orb1:           rgba(59,130,246,0.1);
+      --orb2:           rgba(99,102,241,0.07);
+      --hero-grad:      linear-gradient(135deg,#60a5fa 0%,#3b82f6 40%,#818cf8 100%);
+      --badge-bg:       rgba(59,130,246,0.09);
+      --badge-border:   rgba(59,130,246,0.2);
+      --badge-color:    #60a5fa;
+      --input-bg:       rgba(255,255,255,0.035);
+      --input-border:   rgba(255,255,255,0.07);
+      --label-color:    #334155;
+      --value-color:    #e2e8f0;
+      --sw-off:         rgba(255,255,255,0.08);
+      --sw-on:          #2563eb;
+      --danger:         rgba(239,68,68,0.1);
+      --danger-border:  rgba(239,68,68,0.22);
+      --danger-text:    #f87171;
+      --green:          #22c55e;
+      --footer-border:  rgba(255,255,255,0.05);
+      --sec-border:     rgba(255,255,255,0.1);
+      --sec-color:      #64748b;
+    }
+    body.light {
+      --bg:             #f0f5ff;
+      --bg2:            #e8efff;
+      --nav-bg:         rgba(240,245,255,0.92);
+      --card-bg:        rgba(255,255,255,0.9);
+      --card-bg-solid:  #ffffff;
+      --card-border:    rgba(37,99,235,0.12);
+      --card-hover:     rgba(37,99,235,0.22);
+      --text:           #0f172a;
+      --text-sub:       #64748b;
+      --text-faint:     #cbd5e1;
+      --accent:         #2563eb;
+      --accent2:        #2563eb;
+      --accent-glow:    rgba(37,99,235,0.08);
+      --grid:           rgba(37,99,235,0.05);
+      --divider:        rgba(37,99,235,0.09);
+      --menu-bg:        #ffffff;
+      --menu-border:    rgba(37,99,235,0.12);
+      --toggle-bg:      #ffffff;
+      --toggle-border:  rgba(37,99,235,0.18);
+      --toggle-color:   #1e40af;
+      --pill:           #2563eb;
+      --knob:           #ffffff;
+      --knob-x:         19px;
+      --orb1:           rgba(59,130,246,0.09);
+      --orb2:           rgba(99,102,241,0.06);
+      --hero-grad:      linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#4f46e5 100%);
+      --badge-bg:       #eff6ff;
+      --badge-border:   rgba(37,99,235,0.18);
+      --badge-color:    #1d4ed8;
+      --input-bg:       #f8faff;
+      --input-border:   rgba(37,99,235,0.13);
+      --label-color:    #94a3b8;
+      --value-color:    #0f172a;
+      --sw-off:         rgba(37,99,235,0.1);
+      --sw-on:          #2563eb;
+      --danger:         #fef2f2;
+      --danger-border:  rgba(239,68,68,0.22);
+      --danger-text:    #dc2626;
+      --footer-border:  rgba(37,99,235,0.08);
+      --sec-border:     rgba(37,99,235,0.14);
+      --sec-color:      #64748b;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    .bg-fixed { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+      background-size: 48px 48px; transition: background-image 0.4s;
+    }
+    .orb { position: absolute; border-radius: 50%; transition: background 0.4s; }
+    .orb-1 { width:580px; height:580px; top:-130px; left:-100px; background:radial-gradient(circle,var(--orb1) 0%,transparent 60%); }
+    .orb-2 { width:420px; height:420px; bottom:-80px; right:-60px; background:radial-gradient(circle,var(--orb2) 0%,transparent 60%); }
+
+    .overlay {
+      position:fixed; inset:0; z-index:150;
+      background:rgba(0,0,0,0.55); opacity:0; pointer-events:none; transition:opacity 0.35s;
+    }
+    .overlay.show { opacity:1; pointer-events:all; }
+
+    /*  Side Menu  */
+    .side-menu {
+      position:fixed; top:0; left:0; height:100vh; width:280px; z-index:200;
+      background:var(--menu-bg); border-right:1px solid var(--menu-border);
+      transform:translateX(-100%);
+      transition:transform 0.38s cubic-bezier(0.16,1,0.3,1),background 0.4s,border-color 0.4s;
+      display:flex; flex-direction:column; box-shadow:6px 0 40px rgba(0,0,0,0.5);
+    }
+    .side-menu.open { transform:translateX(0); }
+    .menu-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:22px 24px 20px; border-bottom:1px solid var(--menu-border);
+    }
+    .menu-logo { display:flex; align-items:center; gap:10px; }
+    .menu-logo img { width:30px; height:30px; object-fit:contain; }
+    .menu-logo-txt {
+      font-size:17px; font-weight:800; letter-spacing:-0.5px;
+      background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .menu-close {
+      width:34px; height:34px; border-radius:8px; border:none; cursor:pointer;
+      background:rgba(255,255,255,0.05); color:var(--text-sub);
+      display:flex; align-items:center; justify-content:center; transition:background 0.2s,color 0.2s;
+    }
+    .menu-close:hover { background:rgba(239,68,68,0.1); color:#f87171; }
+    .menu-nav { flex:1; padding:20px 16px; display:flex; flex-direction:column; gap:6px; }
+    .menu-item {
+      display:flex; align-items:center; gap:13px; padding:13px 16px; border-radius:12px;
+      text-decoration:none; font-size:13.5px; font-weight:500; color:var(--text-sub);
+      transition:background 0.2s,color 0.2s,transform 0.2s; border:1px solid transparent;
+    }
+    .menu-item:hover,.menu-item.active {
+      background:var(--accent-glow); color:var(--accent2);
+      border-color:var(--card-border); transform:translateX(4px);
+    }
+    .menu-item.active { font-weight:700; }
+    .mi-icon {
+      width:36px; height:36px; border-radius:10px; flex-shrink:0;
+      background:var(--badge-bg); border:1px solid var(--badge-border);
+      display:flex; align-items:center; justify-content:center; color:var(--accent2);
+    }
+    .mi-info { display:flex; flex-direction:column; }
+    .mi-label { font-size:13.5px; font-weight:600; }
+    .mi-desc { font-size:11px; color:var(--text-sub); margin-top:1px; }
+    .menu-foot { padding:18px 24px; border-top:1px solid var(--menu-border); font-size:11px; color:var(--text-sub); font-family:'JetBrains Mono',monospace; }
+
+    /*  Navbar  */
+    .navbar {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      height:64px; display:flex; align-items:center; justify-content:space-between;
+      padding:0 20px; background:var(--nav-bg); border-bottom:1px solid var(--divider);
+      backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+      transition:background 0.4s,border-color 0.4s;
+    }
+    .nav-left { display:flex; align-items:center; gap:12px; }
+    .hamburger {
+      width:38px; height:38px; border-radius:9px; border:1px solid var(--toggle-border);
+      background:var(--toggle-bg); cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4.5px;
+      transition:background 0.2s; flex-shrink:0;
+    }
+    .hamburger:hover { background:var(--accent-glow); }
+    .hl { width:16px; height:2px; border-radius:2px; background:var(--text-sub); transition:transform 0.3s,opacity 0.3s,width 0.3s; }
+    .hamburger.active .hl:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+    .hamburger.active .hl:nth-child(2) { opacity:0; width:0; }
+    .hamburger.active .hl:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
+    .nav-brand { display:flex; align-items:center; gap:9px; text-decoration:none; }
+    .nav-brand img { width:32px; height:32px; object-fit:contain; }
+    .nav-brand-txt {
+      font-size:18px; font-weight:800; letter-spacing:-0.6px;
+      background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .nav-right { display:flex; align-items:center; gap:10px; }
+    .theme-btn {
+      display:flex; align-items:center; gap:7px; padding:6px 12px; border-radius:50px;
+      cursor:pointer; font-family:'Outfit',sans-serif; font-size:12px; font-weight:500;
+      background:var(--toggle-bg); color:var(--toggle-color); border:1px solid var(--toggle-border);
+      transition:all 0.3s;
+    }
+    .theme-btn:hover { filter:brightness(1.1); }
+    .ti { width:14px; height:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .tp { width:32px; height:18px; border-radius:18px; background:var(--pill); position:relative; transition:background 0.3s; flex-shrink:0; }
+    .tk { width:12px; height:12px; border-radius:50%; background:var(--knob); position:absolute; top:3px; left:var(--knob-x); transition:left 0.3s cubic-bezier(0.34,1.56,0.64,1),background 0.3s; }
+    .tl { display:none; }
+    @media(min-width:480px){.tl{display:inline;}}
+
+    /*  Page  */
+    .page { position:relative; z-index:1; padding:82px 20px 44px; max-width:1080px; margin:0 auto; }
+
+    .page-head {
+      display:flex; align-items:flex-start; justify-content:space-between;
+      margin-bottom:24px; flex-wrap:wrap; gap:12px;
+      animation:fadeUp 0.5s 0.05s both;
+    }
+    .page-title { font-size:clamp(20px,4vw,28px); font-weight:800; letter-spacing:-0.7px; }
+    .page-title span { background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .page-sub { font-size:13px; color:var(--text-sub); margin-top:3px; }
+    .session-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      background:var(--badge-bg); border:1px solid var(--badge-border); color:var(--badge-color);
+      border-radius:50px; padding:4px 12px; font-size:11px; font-family:'JetBrains Mono',monospace;
+    }
+    .bdot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+    /*  Stats  */
+    .stats-row {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+      margin-bottom:20px; animation:fadeUp 0.5s 0.08s both;
+    }
+    .stat-box {
+      background:var(--card-bg); border:1px solid var(--card-border); border-radius:14px;
+      padding:18px 14px; text-align:center; backdrop-filter:blur(10px);
+      transition:border-color 0.3s,background 0.4s,transform 0.2s;
+    }
+    .stat-box:hover { border-color:var(--card-hover); transform:translateY(-2px); }
+    .stat-num {
+      font-size:clamp(24px,4vw,34px); font-weight:900; letter-spacing:-1px;
+      background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .stat-lbl { font-size:10.5px; color:var(--text-sub); margin-top:3px; font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:0.05em; }
+
+    /*  Grid  */
+    .pgrid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    @media(max-width:760px){ .pgrid{grid-template-columns:1fr;} }
+    .full { grid-column:1/-1; }
+
+    /*  Card  */
+    .card {
+      background:var(--card-bg); border:1px solid var(--card-border); border-radius:18px;
+      padding:24px 22px; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      transition:border-color 0.3s,background 0.4s,box-shadow 0.3s;
+      animation:fadeUp 0.5s both;
+    }
+    .card:hover { border-color:var(--card-hover); box-shadow:0 8px 32px rgba(0,0,0,0.2); }
+    .card:nth-child(1){animation-delay:0.1s}
+    .card:nth-child(2){animation-delay:0.16s}
+    .card:nth-child(3){animation-delay:0.22s}
+    .card:nth-child(4){animation-delay:0.28s}
+
+    .card-hdr {
+      display:flex; align-items:center; justify-content:space-between;
+      padding-bottom:16px; margin-bottom:20px; border-bottom:1px solid var(--divider);
+    }
+    .card-hdr-left { display:flex; align-items:center; gap:10px; }
+    .card-ico {
+      width:36px; height:36px; border-radius:10px; flex-shrink:0;
+      background:var(--badge-bg); border:1px solid var(--badge-border);
+      display:flex; align-items:center; justify-content:center; color:var(--accent2);
+    }
+    .card-ttl { font-size:14px; font-weight:700; letter-spacing:-0.2px; }
+    .card-stl { font-size:11px; color:var(--text-sub); margin-top:2px; }
+
+    /*  Profile Hero  */
+    .prof-hero { display:flex; align-items:flex-start; gap:18px; flex-wrap:wrap; }
+    .avatar {
+      width:76px; height:76px; border-radius:50%; flex-shrink:0;
+      background:linear-gradient(135deg,#1d4ed8,#4f46e5);
+      border:3px solid var(--accent); display:flex; align-items:center; justify-content:center;
+      font-size:26px; font-weight:900; color:white; letter-spacing:-1px;
+      box-shadow:0 0 0 5px var(--accent-glow); position:relative; transition:border-color 0.4s;
+    }
+    .avatar-dot {
+      position:absolute; bottom:3px; right:2px; width:13px; height:13px; border-radius:50%;
+      background:var(--green); border:2.5px solid var(--card-bg-solid);
+    }
+    .prof-meta { flex:1; min-width:150px; }
+    .prof-name { font-size:19px; font-weight:800; letter-spacing:-0.5px; margin-bottom:5px; }
+    .prof-email-pill {
+      display:inline-flex; align-items:center; gap:5px; margin-bottom:8px;
+      background:var(--badge-bg); border:1px solid var(--badge-border); color:var(--badge-color);
+      border-radius:7px; padding:3px 9px; font-size:11.5px; font-family:'JetBrains Mono',monospace;
+    }
+    .prof-joined { font-size:11px; color:var(--text-sub); font-family:'JetBrains Mono',monospace; }
+
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    @media(max-width:440px){ .info-grid{grid-template-columns:1fr;} }
+    .info-cell {
+      background:var(--input-bg); border:1px solid var(--input-border);
+      border-radius:10px; padding:11px 13px;
+      transition:border-color 0.2s,background 0.4s;
+    }
+    .info-cell:hover { border-color:var(--card-hover); }
+    .info-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--label-color); margin-bottom:5px; font-family:'JetBrains Mono',monospace; }
+    .info-val { font-size:13.5px; font-weight:500; color:var(--value-color); transition:color 0.4s; }
+    .info-val.mono { font-family:'JetBrains Mono',monospace; font-size:12.5px; }
+
+    /*  Action Buttons  */
+    .act-list { display:flex; flex-direction:column; gap:9px; }
+    .act-btn {
+      display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:11px;
+      border:1px solid var(--card-border); background:var(--input-bg);
+      cursor:pointer; font-family:'Outfit',sans-serif; font-size:13.5px; font-weight:500;
+      color:var(--text); text-decoration:none; transition:all 0.22s;
+    }
+    .act-btn:hover { transform:translateX(4px); border-color:var(--accent); background:var(--accent-glow); color:var(--accent2); }
+    .act-ico {
+      width:34px; height:34px; border-radius:9px; flex-shrink:0;
+      background:var(--badge-bg); border:1px solid var(--badge-border); color:var(--accent2);
+      display:flex; align-items:center; justify-content:center; transition:background 0.2s;
+    }
+    .act-txt { flex:1; text-align:left; }
+    .act-lbl { font-size:13px; font-weight:700; display:block; }
+    .act-desc { font-size:11px; color:var(--text-sub); margin-top:1px; display:block; }
+    .act-arr { color:var(--text-sub); flex-shrink:0; transition:transform 0.2s; }
+    .act-btn:hover .act-arr { transform:translateX(3px); }
+    .act-btn.danger { color:var(--danger-text); border-color:var(--danger-border); background:var(--danger); }
+    .act-btn.danger .act-ico { background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.2); color:var(--danger-text); }
+    .act-btn.danger:hover { background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.38); }
+
+    /*  Privacy  */
+    .priv-list { display:flex; flex-direction:column; }
+    .priv-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:13px 0; border-bottom:1px solid var(--divider);
+    }
+    .priv-row:last-child { border-bottom:none; padding-bottom:0; }
+    .priv-row:first-child { padding-top:0; }
+    .priv-info { flex:1; padding-right:14px; }
+    .priv-lbl { font-size:13px; font-weight:600; margin-bottom:2px; }
+    .priv-desc { font-size:11px; color:var(--text-sub); line-height:1.4; }
+    .sw { position:relative; width:42px; height:23px; flex-shrink:0; cursor:pointer; }
+    .sw input { opacity:0; width:0; height:0; position:absolute; }
+    .sw-track {
+      position:absolute; inset:0; border-radius:23px;
+      background:var(--sw-off); border:1px solid var(--input-border); transition:background 0.3s,border-color 0.3s;
+    }
+    .sw input:checked ~ .sw-track { background:var(--sw-on); border-color:var(--sw-on); }
+    .sw-knob {
+      position:absolute; top:3px; left:3px; width:17px; height:17px; border-radius:50%;
+      background:white; box-shadow:0 1px 4px rgba(0,0,0,0.3);
+      transition:left 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .sw input:checked ~ .sw-knob { left:22px; }
+    .clr-btn {
+      display:flex; align-items:center; gap:7px; padding:7px 12px; border-radius:8px;
+      border:1px solid var(--danger-border); background:var(--danger); color:var(--danger-text);
+      cursor:pointer; font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+      transition:all 0.2s; white-space:nowrap;
+    }
+    .clr-btn:hover { filter:brightness(1.1); }
+
+    /*  History  */
+    .hist-list { display:flex; flex-direction:column; gap:10px; }
+    .hist-item {
+      display:flex; align-items:center; gap:13px; padding:13px 14px; border-radius:11px;
+      background:var(--input-bg); border:1px solid var(--card-border);
+      text-decoration:none; color:inherit; transition:all 0.22s; cursor:pointer;
+    }
+    .hist-item:hover { border-color:var(--accent); background:var(--accent-glow); transform:translateX(4px); }
+    .score-ring {
+      width:46px; height:46px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:800; font-family:'JetBrains Mono',monospace;
+      border:2.5px solid;
+    }
+    .r-red   { border-color:rgba(239,68,68,0.5);  color:#f87171; background:rgba(239,68,68,0.07); }
+    .r-amber { border-color:rgba(245,158,11,0.5); color:#fbbf24; background:rgba(245,158,11,0.07); }
+    .r-green { border-color:rgba(34,197,94,0.5);  color:#4ade80; background:rgba(34,197,94,0.07); }
+    .hist-info { flex:1; min-width:0; }
+    .hist-prod { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
+    .hist-meta { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+    .hist-date { font-size:10.5px; color:var(--text-sub); font-family:'JetBrains Mono',monospace; }
+    .hist-tag {
+      font-size:10px; padding:2px 7px; border-radius:5px; border:1px solid;
+      font-weight:600; font-family:'JetBrains Mono',monospace;
+    }
+    .t-red   { background:rgba(239,68,68,0.08); border-color:rgba(239,68,68,0.2); color:#f87171; }
+    .t-amber { background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.2); color:#fbbf24; }
+    .t-green { background:rgba(34,197,94,0.08);  border-color:rgba(34,197,94,0.2);  color:#4ade80; }
+    .hist-arr { color:var(--text-sub); flex-shrink:0; transition:transform 0.2s; }
+    .hist-item:hover .hist-arr { transform:translateX(3px); }
+
+    .view-all {
+      display:flex; align-items:center; justify-content:center; gap:7px;
+      width:100%; padding:11px; margin-top:12px; border-radius:10px;
+      border:1px solid var(--sec-border); background:transparent;
+      color:var(--sec-color); cursor:pointer; font-family:'Outfit',sans-serif;
+      font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s;
+    }
+    .view-all:hover { background:var(--accent-glow); border-color:var(--accent); color:var(--accent2); }
+
+    /*  Footer  */
+    .footer {
+      position:relative; z-index:1; text-align:center;
+      padding:22px; font-size:12px; color:var(--text-sub);
+      border-top:1px solid var(--footer-border); margin-top:36px; transition:border-color 0.4s;
+    }
+    .footer a { color:var(--accent2); text-decoration:none; }
+    .footer a:hover { text-decoration:underline; }
+
+    /*  Logout Modal  */
+    .modal-wrap {
+      position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.65);
+      opacity:0; pointer-events:none; transition:opacity 0.3s;
+      display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .modal-wrap.show { opacity:1; pointer-events:all; }
+    .modal {
+      background:var(--card-bg-solid); border:1px solid var(--card-border);
+      border-radius:18px; padding:30px 26px; max-width:360px; width:100%;
+      box-shadow:0 24px 60px rgba(0,0,0,0.6);
+      transform:scale(0.94) translateY(10px);
+      transition:transform 0.3s,background 0.4s,border-color 0.4s;
+    }
+    .modal-wrap.show .modal { transform:scale(1) translateY(0); }
+    .modal-ico {
+      width:50px; height:50px; border-radius:13px; background:var(--danger);
+      border:1px solid var(--danger-border); display:flex; align-items:center;
+      justify-content:center; margin-bottom:14px; color:var(--danger-text);
+    }
+    .modal-ttl { font-size:17px; font-weight:800; margin-bottom:7px; }
+    .modal-desc { font-size:13px; color:var(--text-sub); line-height:1.55; margin-bottom:22px; }
+    .modal-btns { display:flex; gap:10px; }
+    .m-cancel {
+      flex:1; padding:10px; border-radius:9px; border:1px solid var(--sec-border);
+      background:transparent; color:var(--text-sub); cursor:pointer;
+      font-family:'Outfit',sans-serif; font-size:13.5px; font-weight:600; transition:all 0.2s;
+    }
+    .m-cancel:hover { background:var(--input-bg); }
+    .m-confirm {
+      flex:1; padding:10px; border-radius:9px; border:none;
+      background:linear-gradient(135deg,#dc2626,#b91c1c); color:white; cursor:pointer;
+      font-family:'Outfit',sans-serif; font-size:13.5px; font-weight:700;
+      box-shadow:0 4px 14px rgba(220,38,38,0.35); transition:all 0.2s;
+    }
+    .m-confirm:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(220,38,38,0.5); }
+
+    @media(max-width:560px){
+      .page { padding:76px 14px 38px; }
+      .card { padding:18px 16px; }
+      .prof-hero { gap:12px; }
+      .stats-row { gap:10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-fixed">
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <!-- Side Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <div class="menu-header">
+      <div class="menu-logo">
+        <img src="logo1.png" alt="Logo"/>
+        <span class="menu-logo-txt">Scamsniffer</span>
+      </div>
+      <button class="menu-close" onclick="closeMenu()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="menu-nav">
+      <a href="profile.html" class="menu-item active">
+        <div class="mi-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="mi-info"><span class="mi-label">Profile</span><span class="mi-desc">Your account & settings</span></div>
+      </a>
+      <a href="analyzer.html" class="menu-item">
+        <div class="mi-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <div class="mi-info"><span class="mi-label">Fake Review</span><span class="mi-desc">Analyze review authenticity</span></div>
+      </a>
+      <a href="comparison-input.html" class="menu-item">
+        <div class="mi-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="mi-info"><span class="mi-label">Product Comparison</span><span class="mi-desc">Compare across platforms</span></div>
+      </a>
+    </div>
+    <div class="menu-foot">v1.0.0 - AI-Powered - Secure</div>
+  </nav>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <div class="hl"></div><div class="hl"></div><div class="hl"></div>
+      </button>
+      <a href="index.html" class="nav-brand">
+        <img src="logo1.png" alt="Logo"/>
+        <span class="nav-brand-txt">Scamsniffer</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-btn" onclick="toggleTheme()">
+        <span class="ti" id="themeIcon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+        <span class="tl" id="themeLabel">Dark</span>
+        <div class="tp"><div class="tk"></div></div>
+      </button>
+    </div>
+  </header>
+
+  <!-- Page -->
+  <main class="page">
+
+    <!-- Page Header -->
+    <div class="page-head">
+      <div>
+        <div class="page-title">My <span>Profile</span></div>
+        <div class="page-sub">Manage your account and preferences</div>
+      </div>
+      <div class="session-badge"><span class="bdot"></span> Active Session</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num">24</div><div class="stat-lbl">Analyses</div></div>
+      <div class="stat-box"><div class="stat-num">68%</div><div class="stat-lbl">Avg Fake Rate</div></div>
+      <div class="stat-box"><div class="stat-num">12</div><div class="stat-lbl">Days Active</div></div>
+    </div>
+
+    <div class="pgrid">
+
+      <!-- Profile Info (full width) -->
+      <div class="card full">
+        <div class="card-hdr">
+          <div class="card-hdr-left">
+            <div class="card-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div><div class="card-ttl">Account Information</div><div class="card-stl">Your registered profile details</div></div>
+          </div>
+        </div>
+        <div class="prof-hero">
+          <div class="avatar" id="avatarEl">
+            <span id="avatarInitials">JS</span>
+            <div class="avatar-dot"></div>
+          </div>
+          <div class="prof-meta">
+            <div class="prof-name" id="profName">John Smith</div>
+            <div class="prof-email-pill">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span id="profEmailPill">john.smith@email.com</span>
+            </div>
+            <div class="prof-joined">Member since <span id="profJoined">Jan 15, 2025</span></div>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-cell"><div class="info-lbl">First Name</div><div class="info-val" id="iFirst">John</div></div>
+          <div class="info-cell"><div class="info-lbl">Last Name</div><div class="info-val" id="iLast">Smith</div></div>
+          <div class="info-cell"><div class="info-lbl">Email Address</div><div class="info-val mono" id="iEmail">john.smith@email.com</div></div>
+          <div class="info-cell"><div class="info-lbl">Phone Number</div><div class="info-val mono" id="iPhone">+60 12 345 6789</div></div>
+          <div class="info-cell"><div class="info-lbl">Account Created</div><div class="info-val mono" id="iCreated">15 Jan 2025</div></div>
+          <div class="info-cell"><div class="info-lbl">Account Status</div><div class="info-val" style="color:var(--green);font-weight:700;"> Active</div></div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-left">
+            <div class="card-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div><div class="card-ttl">Quick Actions</div><div class="card-stl">Navigate key features</div></div>
+          </div>
+        </div>
+        <div class="act-list">
+          <a href="analyzer.html" class="act-btn">
+            <div class="act-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            <div class="act-txt"><span class="act-lbl">Fake Review Analyzer</span><span class="act-desc">Detect deceptive reviews with AI</span></div>
+            <svg class="act-arr" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="history.html" class="act-btn">
+            <div class="act-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="act-txt"><span class="act-lbl">Analysis History</span><span class="act-desc">View all past analyses</span></div>
+            <svg class="act-arr" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="comparison-input.html" class="act-btn">
+            <div class="act-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="act-txt"><span class="act-lbl">Product Comparison</span><span class="act-desc">Compare products side by side</span></div>
+            <svg class="act-arr" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <button class="act-btn danger" onclick="showLogout()">
+            <div class="act-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+            <div class="act-txt"><span class="act-lbl">Sign Out</span><span class="act-desc">Securely end your session</span></div>
+            <svg class="act-arr" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Privacy Settings -->
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-left">
+            <div class="card-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div><div class="card-ttl">Privacy & Settings</div><div class="card-stl">Control your data preferences</div></div>
+          </div>
+        </div>
+        <div class="priv-list">
+          <div class="priv-row">
+            <div class="priv-info">
+              <div class="priv-lbl">Show Email Publicly</div>
+              <div class="priv-desc">Allow others to see your email on shared analyses</div>
+            </div>
+            <label class="sw"><input type="checkbox" id="swEmail" onchange="savePrivacy()"/><div class="sw-track"></div><div class="sw-knob"></div></label>
+          </div>
+          <div class="priv-row">
+            <div class="priv-info">
+              <div class="priv-lbl">Enable Data Tracking</div>
+              <div class="priv-desc">Help improve AI accuracy with anonymized usage data</div>
+            </div>
+            <label class="sw"><input type="checkbox" id="swTrack" checked onchange="savePrivacy()"/><div class="sw-track"></div><div class="sw-knob"></div></label>
+          </div>
+          <div class="priv-row">
+            <div class="priv-info">
+              <div class="priv-lbl">Analysis Notifications</div>
+              <div class="priv-desc">Receive alerts when scan results are ready</div>
+            </div>
+            <label class="sw"><input type="checkbox" id="swNotif" checked onchange="savePrivacy()"/><div class="sw-track"></div><div class="sw-knob"></div></label>
+          </div>
+          <div class="priv-row">
+            <div class="priv-info">
+              <div class="priv-lbl">Save Analysis History</div>
+              <div class="priv-desc">Keep a local record of past analyses</div>
+            </div>
+            <label class="sw"><input type="checkbox" id="swHist" checked onchange="savePrivacy()"/><div class="sw-track"></div><div class="sw-knob"></div></label>
+          </div>
+          <div class="priv-row">
+            <div class="priv-info">
+              <div class="priv-lbl">Clear Account Data</div>
+              <div class="priv-desc">Permanently remove all stored analysis data</div>
+            </div>
+            <button class="clr-btn" onclick="clearData()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent History (full width) -->
+      <div class="card full">
+        <div class="card-hdr">
+          <div class="card-hdr-left">
+            <div class="card-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><div class="card-ttl">Recent Analyses</div><div class="card-stl">Your last 5 review scans</div></div>
+          </div>
+          <a href="history.html" style="font-size:12px;color:var(--accent2);text-decoration:none;font-weight:600;display:flex;align-items:center;gap:3px;">
+            View All <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+        <div class="hist-list" id="histList"></div>
+        <a href="history.html" class="view-all">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          View Full History
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+     2025 Scamsniffer &nbsp;&nbsp; <a href="index.html">Home</a> &nbsp;&nbsp; <a href="analyzer.html">Analyzer</a> &nbsp;&nbsp; <a href="comparison-input.html">Compare</a>
+  </footer>
+
+  <!-- Logout Modal -->
+  <div class="modal-wrap" id="logoutModal" onclick="handleModalClick(event)">
+    <div class="modal">
+      <div class="modal-ico">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </div>
+      <div class="modal-ttl">Sign Out?</div>
+      <div class="modal-desc">You will be securely logged out of your Scamsniffer session. Any unsaved progress will be lost.</div>
+      <div class="modal-btns">
+        <button class="m-cancel" onclick="hideLogout()">Stay Logged In</button>
+        <button class="m-confirm" onclick="doLogout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function sessionToken() {
+    return localStorage.getItem('scamsniffer-session') || '';
+  }
+
+  function authHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    const token = sessionToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return headers;
+  }
+
+  async function fetchJson(url, options) {
+    const res = await fetch(url, options);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) {
+      throw new Error(data.error || ('Request failed: ' + res.status));
+    }
+    return data;
+  }
+
+  function formatDateShort(value) {
+    if (!value) return '-';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function formatDateFull(value) {
+    if (!value) return '-';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function updateProfileUI(user) {
+    const firstName = user.first_name || user.firstName || 'User';
+    const lastName = user.last_name || user.lastName || '';
+    const email = user.email || '';
+    const phone = user.phone || '';
+    const createdAt = user.created_at || '';
+
+    const initials = ((firstName[0] || 'U') + (lastName[0] || 'S')).toUpperCase();
+    document.getElementById('avatarInitials').textContent = initials;
+    document.getElementById('profName').textContent = (firstName + ' ' + lastName).trim();
+    document.getElementById('profEmailPill').textContent = email || '-';
+    document.getElementById('profJoined').textContent = formatDateFull(createdAt);
+
+    document.getElementById('iFirst').textContent = firstName;
+    document.getElementById('iLast').textContent = lastName || '-';
+    document.getElementById('iEmail').textContent = email || '-';
+    document.getElementById('iPhone').textContent = phone || '-';
+    document.getElementById('iCreated').textContent = formatDateShort(createdAt);
+
+    localStorage.setItem('scamsniffer-user', JSON.stringify({
+      firstName,
+      lastName,
+      email,
+      phone,
+      created: formatDateShort(createdAt),
+      joinedFull: formatDateFull(createdAt),
+    }));
+  }
+
+  function historyLevel(item) {
+    const fakePct = Number(item.fake_reviews_pct);
+    const trust = Number(item.trust_score);
+
+    if (!Number.isNaN(fakePct)) {
+      if (fakePct >= 65) return { level: 'red', tag: 'High Risk' };
+      if (fakePct >= 35) return { level: 'amber', tag: 'Moderate' };
+      return { level: 'green', tag: 'Authentic' };
+    }
+
+    if (!Number.isNaN(trust)) {
+      if (trust < 40) return { level: 'red', tag: 'High Risk' };
+      if (trust < 70) return { level: 'amber', tag: 'Moderate' };
+      return { level: 'green', tag: 'Authentic' };
+    }
+
+    return { level: 'amber', tag: 'Unknown' };
+  }
+
+  function renderHistory(items) {
+    const list = document.getElementById('histList');
+    if (!Array.isArray(items) || items.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:22px;color:var(--text-sub);font-size:13px;">No history data found.</div>';
+      return;
+    }
+
+    list.innerHTML = items.map(item => {
+      const levelInfo = historyLevel(item);
+      const score = Number(item.fake_reviews_pct);
+      const displayScore = Number.isNaN(score) ? (100 - Number(item.trust_score || 0)) : score;
+      const product = item.product_title || item.url || 'Analysis';
+      const when = formatDateShort(item.created_at);
+
+      return `
+        <a href="${item.analysis_type === 'compare' ? 'comparison-results.html' : 'results.html'}?analysis_id=${encodeURIComponent(item.id || '')}&url=${encodeURIComponent(item.url || '')}" class="hist-item">
+          <div class="score-ring r-${levelInfo.level}">${Math.max(0, Math.min(100, Math.round(displayScore || 0)))}%</div>
+          <div class="hist-info">
+            <div class="hist-prod">${product}</div>
+            <div class="hist-meta">
+              <span class="hist-date">${when}</span>
+              <span class="hist-tag t-${levelInfo.level}">${levelInfo.tag}</span>
+            </div>
+          </div>
+          <svg class="hist-arr" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      `;
+    }).join('');
+  }
+
+  async function loadProfile() {
+    const token = sessionToken();
+    if (!token) {
+      window.location.href = 'scamsniffer-login.html';
+      return;
+    }
+
+    try {
+      const profileData = await fetchJson('/api/profile', { headers: authHeaders() });
+      updateProfileUI(profileData.user || {});
+
+      const stats = profileData.stats || {};
+      const statsEls = document.querySelectorAll('.stats-row .stat-box .stat-num');
+      if (statsEls[0]) statsEls[0].textContent = String(stats.total_analyses || 0);
+      if (statsEls[1]) {
+        const recent = Array.isArray(profileData.recent) ? profileData.recent : [];
+        const fakePcts = recent
+          .map(r => Number(r.fake_reviews_pct))
+          .filter(v => !Number.isNaN(v));
+        const avgFake = fakePcts.length ? Math.round(fakePcts.reduce((a, b) => a + b, 0) / fakePcts.length) : 0;
+        statsEls[1].textContent = avgFake + '%';
+      }
+      if (statsEls[2]) statsEls[2].textContent = String((profileData.recent || []).length || 0);
+
+      const historyData = await fetchJson('/api/history?limit=5', { headers: authHeaders() });
+      renderHistory(historyData.items || []);
+    } catch (err) {
+      if ((err.message || '').toLowerCase().includes('session')) {
+        doLogout();
+        return;
+      }
+
+      const localUser = JSON.parse(localStorage.getItem('scamsniffer-user') || 'null');
+      if (localUser) {
+        updateProfileUI({
+          first_name: localUser.firstName,
+          last_name: localUser.lastName,
+          email: localUser.email,
+          phone: localUser.phone,
+          created_at: localUser.created,
+        });
+      }
+      renderHistory([]);
+    }
+  }
+
+  function savePrivacy() {
+    localStorage.setItem('scamsniffer-privacy', JSON.stringify({
+      email: document.getElementById('swEmail').checked,
+      track: document.getElementById('swTrack').checked,
+      notif: document.getElementById('swNotif').checked,
+      history: document.getElementById('swHist').checked,
+    }));
+  }
+
+  function loadPrivacy() {
+    const value = JSON.parse(localStorage.getItem('scamsniffer-privacy') || 'null');
+    if (!value) return;
+    document.getElementById('swEmail').checked = !!value.email;
+    document.getElementById('swTrack').checked = !!value.track;
+    document.getElementById('swNotif').checked = !!value.notif;
+    document.getElementById('swHist').checked = !!value.history;
+  }
+
+  async function clearData() {
+    if (!confirm('Are you sure? This will clear local history cache.')) return;
+    localStorage.removeItem('scamsniffer-last-review');
+    localStorage.removeItem('scamsniffer-last-compare');
+    renderHistory([]);
+  }
+
+  function showLogout() {
+    document.getElementById('logoutModal').classList.add('show');
+  }
+
+  function hideLogout() {
+    document.getElementById('logoutModal').classList.remove('show');
+  }
+
+  function handleModalClick(e) {
+    if (e.target === document.getElementById('logoutModal')) hideLogout();
+  }
+
+  async function doLogout() {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', headers: authHeaders() });
+    } catch (_) {}
+    localStorage.removeItem('scamsniffer-session');
+    window.location.href = 'scamsniffer-login.html';
+  }
+
+  const moonSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
+  const sunSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+  let isDark = localStorage.getItem('scamsniffer-theme') !== 'light';
+
+  function applyTheme() {
+    document.body.classList.toggle('light', !isDark);
+    document.getElementById('themeIcon').innerHTML = isDark ? moonSVG : sunSVG;
+    document.getElementById('themeLabel').textContent = isDark ? 'Dark' : 'Light';
+  }
+
+  function toggleTheme() {
+    isDark = !isDark;
+    localStorage.setItem('scamsniffer-theme', isDark ? 'dark' : 'light');
+    applyTheme();
+  }
+
+  let menuOpen = false;
+  function toggleMenu() { menuOpen ? closeMenu() : openMenu(); }
+  function openMenu() {
+    menuOpen = true;
+    document.getElementById('sideMenu').classList.add('open');
+    document.getElementById('overlay').classList.add('show');
+    document.getElementById('hamburger').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menuOpen = false;
+    document.getElementById('sideMenu').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeMenu();
+      hideLogout();
+    }
+  });
+
+  applyTheme();
+  loadPrivacy();
+  loadProfile();
+</script>
+</body>
+</html>
+
+
+
+
+

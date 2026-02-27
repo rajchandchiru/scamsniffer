@@ -1,0 +1,819 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scamsniffer - Fake Review Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { min-height: 100vh; overflow-x: hidden; }
+
+    :root {
+      --bg:            #04060f;
+      --bg2:           #070b18;
+      --nav-bg:        rgba(4,6,15,0.88);
+      --card-bg:       rgba(10,16,36,0.7);
+      --card-border:   rgba(59,130,246,0.15);
+      --text:          #e8edf8;
+      --text-sub:      #64748b;
+      --text-faint:    #1e3a5f;
+      --accent:        #3b82f6;
+      --accent2:       #60a5fa;
+      --accent-glow:   rgba(59,130,246,0.18);
+      --grid:          rgba(59,130,246,0.04);
+      --divider:       rgba(59,130,246,0.12);
+      --menu-bg:       #07091a;
+      --menu-border:   rgba(59,130,246,0.15);
+      --toggle-bg:     rgba(255,255,255,0.07);
+      --toggle-border: rgba(255,255,255,0.1);
+      --toggle-color:  #94a3b8;
+      --pill:          rgba(59,130,246,0.25);
+      --knob:          #60a5fa;
+      --knob-x:        3px;
+      --orb1:          rgba(59,130,246,0.12);
+      --orb2:          rgba(99,102,241,0.08);
+      --hero-gradient: linear-gradient(135deg,#60a5fa 0%,#3b82f6 40%,#818cf8 100%);
+      --badge-bg:      rgba(59,130,246,0.1);
+      --badge-border:  rgba(59,130,246,0.22);
+      --badge-color:   #60a5fa;
+      --input-bg:      rgba(255,255,255,0.035);
+      --input-border:  rgba(255,255,255,0.07);
+      --input-focus:   rgba(59,130,246,0.5);
+      --sec-btn-border:rgba(255,255,255,0.12);
+      --sec-btn-color: #94a3b8;
+      --footer-border: rgba(255,255,255,0.06);
+      --danger:        #f87171;
+      --danger-bg:     rgba(239,68,68,0.08);
+      --danger-border: rgba(239,68,68,0.2);
+    }
+    body.light {
+      --bg:            #f0f5ff;
+      --bg2:           #e8efff;
+      --nav-bg:        rgba(240,245,255,0.9);
+      --card-bg:       rgba(255,255,255,0.85);
+      --card-border:   rgba(37,99,235,0.14);
+      --text:          #0f172a;
+      --text-sub:      #64748b;
+      --text-faint:    #cbd5e1;
+      --accent:        #2563eb;
+      --accent2:       #3b82f6;
+      --accent-glow:   rgba(37,99,235,0.12);
+      --grid:          rgba(37,99,235,0.055);
+      --divider:       rgba(37,99,235,0.1);
+      --menu-bg:       #ffffff;
+      --menu-border:   rgba(37,99,235,0.14);
+      --toggle-bg:     #ffffff;
+      --toggle-border: rgba(37,99,235,0.2);
+      --toggle-color:  #1e40af;
+      --pill:          #2563eb;
+      --knob:          #ffffff;
+      --knob-x:        19px;
+      --orb1:          rgba(59,130,246,0.12);
+      --orb2:          rgba(99,102,241,0.07);
+      --hero-gradient: linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#4f46e5 100%);
+      --badge-bg:      #eff6ff;
+      --badge-border:  rgba(37,99,235,0.2);
+      --badge-color:   #1d4ed8;
+      --input-bg:      #f8faff;
+      --input-border:  rgba(37,99,235,0.13);
+      --input-focus:   rgba(37,99,235,0.45);
+      --sec-btn-border:rgba(37,99,235,0.2);
+      --sec-btn-color: #374151;
+      --footer-border: rgba(37,99,235,0.1);
+      --danger:        #dc2626;
+      --danger-bg:     #fef2f2;
+      --danger-border: rgba(239,68,68,0.22);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    /* BG */
+    .bg-fixed { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 48px 48px;
+      transition: background-image 0.4s;
+    }
+    .orb { position: absolute; border-radius: 50%; transition: background 0.4s; }
+    .orb-1 { width: 700px; height: 700px; top: -200px; left: -180px; background: radial-gradient(circle, var(--orb1) 0%, transparent 60%); }
+    .orb-2 { width: 500px; height: 500px; bottom: -100px; right: -100px; background: radial-gradient(circle, var(--orb2) 0%, transparent 60%); }
+    .orb-3 { width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%); }
+
+    /* OVERLAY */
+    .overlay {
+      position: fixed; inset: 0; z-index: 150;
+      background: rgba(0,0,0,0.55); opacity: 0; pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+
+    /* SIDE MENU */
+    .side-menu {
+      position: fixed; top: 0; left: 0; height: 100vh; width: 280px; z-index: 200;
+      background: var(--menu-bg); border-right: 1px solid var(--menu-border);
+      transform: translateX(-100%);
+      transition: transform 0.38s cubic-bezier(0.16,1,0.3,1), background 0.4s, border-color 0.4s;
+      display: flex; flex-direction: column;
+      box-shadow: 6px 0 40px rgba(0,0,0,0.5);
+    }
+    .side-menu.open { transform: translateX(0); }
+    .menu-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 24px 20px; border-bottom: 1px solid var(--menu-border);
+    }
+    .menu-logo { display: flex; align-items: center; gap: 10px; }
+    .menu-logo-text {
+      font-size: 17px; font-weight: 800; letter-spacing: -0.5px;
+      background: var(--hero-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .menu-close {
+      width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer;
+      background: rgba(255,255,255,0.05); color: var(--text-sub);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .menu-close:hover { background: rgba(239,68,68,0.1); color: #f87171; }
+    .menu-nav { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
+    .menu-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 16px; border-radius: 12px;
+      text-decoration: none; font-size: 14px; font-weight: 500; color: var(--text-sub);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      cursor: pointer; border: 1px solid transparent;
+    }
+    .menu-item:hover, .menu-item.active {
+      background: var(--accent-glow); color: var(--accent2);
+      border-color: var(--card-border); transform: translateX(4px);
+    }
+    .menu-item.active { font-weight: 700; }
+    .menu-item-icon {
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      display: flex; align-items: center; justify-content: center; color: var(--accent2);
+    }
+    .menu-item-info { display: flex; flex-direction: column; }
+    .menu-item-label { font-size: 14px; font-weight: 600; }
+    .menu-item-desc { font-size: 11px; color: var(--text-sub); margin-top: 1px; }
+    .menu-footer {
+      padding: 20px 24px; border-top: 1px solid var(--menu-border);
+      font-size: 11.5px; color: var(--text-sub); font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 66px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--divider);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .nav-left { display: flex; align-items: center; gap: 14px; }
+    .hamburger {
+      width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--toggle-border);
+      background: var(--toggle-bg); cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .hamburger:hover { background: var(--accent-glow); }
+    .ham-line {
+      width: 18px; height: 2px; border-radius: 2px; background: var(--text-sub);
+      transition: background 0.2s, transform 0.3s, opacity 0.3s, width 0.3s;
+    }
+    .hamburger.active .ham-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active .ham-line:nth-child(2) { opacity: 0; width: 0; }
+    .hamburger.active .ham-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-brand-text {
+      font-size: 19px; font-weight: 800; letter-spacing: -0.6px;
+      background: var(--hero-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .theme-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 13px; border-radius: 50px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 12.5px; font-weight: 500;
+      background: var(--toggle-bg); color: var(--toggle-color);
+      border: 1px solid var(--toggle-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { filter: brightness(1.1); }
+    .toggle-icon { width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .t-pill { width: 34px; height: 19px; border-radius: 20px; background: var(--pill); position: relative; transition: background 0.3s; flex-shrink: 0; }
+    .t-knob { width: 13px; height: 13px; border-radius: 50%; background: var(--knob); position: absolute; top: 3px; left: var(--knob-x); transition: left 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.3s; }
+    .toggle-label { display: none; }
+    @media (min-width: 480px) { .toggle-label { display: inline; } }
+
+    /* PAGE */
+    .page { position: relative; z-index: 1; }
+
+    /* ANALYZER SECTION */
+    .analyzer-section {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 100px 24px 60px;
+    }
+
+    .analyzer-wrap {
+      width: 100%; max-width: 620px;
+      animation: fadeUp 0.65s 0.15s both;
+    }
+
+    @keyframes fadeUp { from { opacity:0; transform: translateY(22px); } to { opacity:1; transform: none; } }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      color: var(--badge-color); border-radius: 50px;
+      padding: 5px 14px; font-size: 12px; font-family: 'JetBrains Mono', monospace;
+      font-weight: 500; letter-spacing: 0.04em; margin-bottom: 28px;
+    }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; flex-shrink: 0; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+
+    .analyzer-title {
+      font-size: clamp(34px, 6vw, 58px);
+      font-weight: 900; line-height: 1.05; letter-spacing: -2px;
+      margin-bottom: 14px;
+    }
+    .analyzer-title .gradient-word {
+      background: var(--hero-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .analyzer-desc {
+      font-size: 15px; color: var(--text-sub); line-height: 1.65;
+      margin-bottom: 40px; max-width: 500px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    }
+
+    /* CARD */
+    .analyzer-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 36px 32px;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(59,130,246,0.05);
+      transition: background 0.4s, border-color 0.4s;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 11px; font-family: 'JetBrains Mono', monospace;
+      font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-sub); margin-bottom: 10px;
+    }
+
+    .input-wrap { position: relative; }
+    .input-icon {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--text-sub); pointer-events: none;
+      transition: color 0.2s;
+    }
+    .url-input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 14px;
+      padding: 16px 16px 16px 48px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.25s, background 0.4s, box-shadow 0.25s;
+      letter-spacing: -0.2px;
+    }
+    .url-input::placeholder { color: var(--text-sub); opacity: 0.6; }
+    .url-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .url-input:focus ~ .input-icon { color: var(--accent2); }
+
+    .error-msg {
+      display: none;
+      align-items: center; gap: 6px;
+      margin-top: 10px;
+      font-size: 12px; font-family: 'JetBrains Mono', monospace;
+      color: var(--danger);
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      animation: errShake 0.35s ease;
+    }
+    .error-msg.show { display: flex; }
+    @keyframes errShake {
+      0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)}
+    }
+
+    .divider { height: 1px; background: var(--divider); margin: 28px 0; }
+
+    .btn-row { display: flex; gap: 12px; }
+
+    .btn-primary {
+      flex: 1;
+      padding: 14px 24px; border-radius: 12px; border: none; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700;
+      background: linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);
+      color: white; box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: transform 0.22s, box-shadow 0.22s;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,99,235,0.55); }
+    .btn-primary:hover::after { opacity: 1; }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      padding: 14px 22px; border-radius: 12px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600;
+      background: transparent; border: 1.5px solid var(--sec-btn-border);
+      color: var(--sec-btn-color);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.22s, border-color 0.22s, color 0.22s, transform 0.22s;
+    }
+    .btn-secondary:hover {
+      background: var(--accent-glow); border-color: var(--accent);
+      color: var(--accent2); transform: translateY(-2px);
+    }
+
+    /* STATS ROW */
+    .stats-strip {
+      display: flex; gap: 0;
+      margin-top: 28px;
+      border: 1px solid var(--card-border);
+      border-radius: 16px; overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+    .stat-item {
+      flex: 1; padding: 18px 12px; text-align: center;
+      border-right: 1px solid var(--card-border);
+      background: var(--badge-bg);
+      transition: background 0.4s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: clamp(18px, 3vw, 24px); font-weight: 800; letter-spacing: -0.8px;
+      background: var(--hero-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 10.5px; color: var(--text-sub);
+      font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;
+    }
+
+    /* LOADING OVERLAY */
+    .loading-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .loading-overlay.active { opacity: 1; pointer-events: all; }
+
+    .loader-spinner {
+      width: 52px; height: 52px;
+      border: 2px solid var(--divider);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-title {
+      font-size: 17px; font-weight: 700; letter-spacing: -0.4px; color: var(--text);
+    }
+    .loader-sub {
+      font-size: 12px; color: var(--text-sub);
+      font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;
+      margin-top: -10px;
+    }
+    .loader-steps {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-top: 6px;
+    }
+    .loader-step {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; font-family: 'JetBrains Mono', monospace;
+      color: var(--text-sub); padding: 0 4px;
+    }
+    .step-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--divider); flex-shrink: 0;
+      transition: background 0.4s;
+    }
+    .step-dot.done { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+    .step-dot.active { background: var(--accent); animation: pulse 1s infinite; }
+
+    .progress-track {
+      width: 260px; height: 3px;
+      background: var(--divider); border-radius: 3px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      border-radius: 3px;
+      box-shadow: 0 0 10px rgba(59,130,246,0.5);
+      transition: width 0.1s linear;
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--footer-border);
+      padding: 28px 24px; text-align: center;
+      font-size: 12.5px; color: var(--text-sub);
+      position: relative; z-index: 1;
+      transition: border-color 0.4s;
+    }
+    .footer a { color: var(--accent2); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 540px) {
+      .analyzer-card { padding: 26px 20px; border-radius: 18px; }
+      .btn-row { flex-direction: column; }
+      .stats-strip { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--card-border); }
+      .stat-item:last-child { border-bottom: none; }
+      .analyzer-section { padding: 90px 16px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-fixed">
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <!-- Side Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <div class="menu-header">
+      <div class="menu-logo">
+        <img src="logo1.png" alt="Scamsniffer" style="width:32px;height:32px;object-fit:contain;"/>
+        <span class="menu-logo-text">Scamsniffer</span>
+      </div>
+      <button class="menu-close" onclick="closeMenu()" aria-label="Close menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="menu-nav">
+      <a href="profile.html" class="menu-item" onclick="closeMenu()">
+        <div class="menu-item-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="menu-item-info">
+          <span class="menu-item-label">Profile</span>
+          <span class="menu-item-desc">Manage your account</span>
+        </div>
+      </a>
+      <a href="analyzer.html" class="menu-item active" onclick="closeMenu()">
+        <div class="menu-item-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="menu-item-info">
+          <span class="menu-item-label">Fake Review</span>
+          <span class="menu-item-desc">Analyze review authenticity</span>
+        </div>
+      </a>
+      <a href="comparison-input.html" class="menu-item" onclick="closeMenu()">
+        <div class="menu-item-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="menu-item-info">
+          <span class="menu-item-label">Product Comparison</span>
+          <span class="menu-item-desc">Compare across platforms</span>
+        </div>
+      </a>
+    </div>
+    <div class="menu-footer">v1.0.0 - AI-Powered - Secure</div>
+  </nav>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+      </button>
+      <a href="index.html" class="nav-brand">
+        <img src="logo1.png" alt="Scamsniffer Logo" style="width:38px;height:38px;object-fit:contain;"/>
+        <span class="nav-brand-text">Scamsniffer</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="toggle-icon" id="themeIcon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </span>
+        <span class="toggle-label" id="themeLabel">Dark</span>
+        <div class="t-pill"><div class="t-knob" id="tKnob"></div></div>
+      </button>
+    </div>
+  </header>
+
+  <!-- Page -->
+  <main class="page">
+    <section class="analyzer-section">
+      <div class="analyzer-wrap">
+
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          AI-Powered - Real-Time Detection - Trusted Platform
+        </div>
+
+        <h1 class="analyzer-title">
+          Analyze Product<br/><span class="gradient-word">Reviews.</span>
+        </h1>
+
+        <p class="analyzer-desc">
+          Paste any product URL from Amazon, Flipkart, eBay, or any e-commerce platform.&nbsp;
+          Our AI detects fake, bot-generated, and manipulated reviews instantly.
+        </p>
+
+        <div class="analyzer-card">
+          <label class="input-label" for="productUrl">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:5px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Product URL
+          </label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="left:16px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input
+              type="url"
+              id="productUrl"
+              class="url-input"
+              placeholder="https://www.amazon.in/dp/B0XXXXXXXX..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+          <div class="error-msg" id="errorMsg">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Please enter a valid product URL (e.g. https://amazon.in/...)
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="exploreBtn">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Explore
+            </button>
+            <button class="btn-secondary" id="cancelBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-item">
+            <div class="stat-num" id="statAccuracy">98.4%</div>
+            <div class="stat-label">Detection Accuracy</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statReviews">2.1M+</div>
+            <div class="stat-label">Reviews Analyzed</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statResponse">&lt;1.2s</div>
+            <div class="stat-label">Avg Response Time</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="footer">
+       2025 Scamsniffer - AI-Powered Review Intelligence 
+      <a href="scamsniffer-login.html">Sign In</a> 
+      <a href="scamsniffer-register.html">Register</a>
+    </footer>
+  </main>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loader-spinner"></div>
+    <div class="loader-title">Scanning Reviews</div>
+    <div class="loader-sub">Running AI detection models</div>
+    <div class="loader-steps">
+      <div class="loader-step"><div class="step-dot" id="step1"></div>Fetching product data</div>
+      <div class="loader-step"><div class="step-dot" id="step2"></div>Analyzing review patterns</div>
+      <div class="loader-step"><div class="step-dot" id="step3"></div>Calculating authenticity score</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <script>
+    const moonSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
+    const sunSVG  = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+
+    let isDark = localStorage.getItem('scamsniffer-theme') !== 'light';
+    applyTheme();
+
+    function applyTheme() {
+      document.body.classList.toggle('light', !isDark);
+      document.getElementById('themeIcon').innerHTML = isDark ? moonSVG : sunSVG;
+      document.getElementById('themeLabel').textContent = isDark ? 'Dark' : 'Light';
+    }
+    function toggleTheme() {
+      isDark = !isDark;
+      localStorage.setItem('scamsniffer-theme', isDark ? 'dark' : 'light');
+      applyTheme();
+    }
+
+    let menuOpen = false;
+    function toggleMenu() { menuOpen ? closeMenu() : openMenu(); }
+    function openMenu() {
+      menuOpen = true;
+      document.getElementById('sideMenu').classList.add('open');
+      document.getElementById('overlay').classList.add('show');
+      document.getElementById('hamburger').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      menuOpen = false;
+      document.getElementById('sideMenu').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+      document.getElementById('hamburger').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+    function isValidUrl(s) {
+      try {
+        const u = new URL(s);
+        return (u.protocol === 'http:' || u.protocol === 'https:') && u.hostname.includes('.');
+      } catch { return false; }
+    }
+
+    const exploreBtn = document.getElementById('exploreBtn');
+    const cancelBtn  = document.getElementById('cancelBtn');
+    const urlInput   = document.getElementById('productUrl');
+    const errorMsg   = document.getElementById('errorMsg');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const progressFill   = document.getElementById('progressFill');
+    const steps = [
+      document.getElementById('step1'),
+      document.getElementById('step2'),
+      document.getElementById('step3'),
+    ];
+
+    function randomizeHeroStats() {
+      const accuracy = (96 + Math.random() * 3.9).toFixed(1);
+      const reviewsM = (1.2 + Math.random() * 3.1).toFixed(1);
+      const response = (0.6 + Math.random() * 1.1).toFixed(2);
+
+      const accuracyEl = document.getElementById('statAccuracy');
+      const reviewsEl = document.getElementById('statReviews');
+      const responseEl = document.getElementById('statResponse');
+
+      if (accuracyEl) accuracyEl.textContent = `${accuracy}%`;
+      if (reviewsEl) reviewsEl.textContent = `${reviewsM}M+`;
+      if (responseEl) responseEl.textContent = `<${response}s`;
+    }
+
+    let loadingInterval = null;
+    let loadingPct = 0;
+
+    function setLoadingProgress(pct) {
+      loadingPct = Math.max(0, Math.min(100, pct));
+      progressFill.style.width = loadingPct + '%';
+      steps.forEach(s => s.className = 'step-dot');
+      if (loadingPct < 33) {
+        steps[0].classList.add('active');
+      } else if (loadingPct < 66) {
+        steps[0].classList.add('done');
+        steps[1].classList.add('active');
+      } else if (loadingPct < 100) {
+        steps[0].classList.add('done');
+        steps[1].classList.add('done');
+        steps[2].classList.add('active');
+      } else {
+        steps[0].classList.add('done');
+        steps[1].classList.add('done');
+        steps[2].classList.add('done');
+      }
+    }
+
+    function startLoadingAnimation() {
+      loadingOverlay.classList.add('active');
+      setLoadingProgress(4);
+      if (loadingInterval) clearInterval(loadingInterval);
+      loadingInterval = setInterval(() => {
+        if (loadingPct >= 92) return;
+        setLoadingProgress(loadingPct + (Math.random() * 7 + 2));
+      }, 180);
+    }
+
+    function stopLoadingAnimation() {
+      if (loadingInterval) {
+        clearInterval(loadingInterval);
+        loadingInterval = null;
+      }
+      loadingOverlay.classList.remove('active');
+      setLoadingProgress(0);
+    }
+
+    function showError(text) {
+      const target = errorMsg.querySelector('span');
+      if (target) target.textContent = text;
+      errorMsg.classList.remove('show');
+      void errorMsg.offsetWidth;
+      errorMsg.classList.add('show');
+    }
+
+    async function runReviewAnalysis(url) {
+      startLoadingAnimation();
+      exploreBtn.disabled = true;
+      cancelBtn.disabled = true;
+      const token = localStorage.getItem('scamsniffer-session') || '';
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      try {
+        const res = await fetch('/api/reviews/analyze', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ url }),
+        });
+        const payload = await res.json();
+        if (!res.ok || !payload.ok) {
+          throw new Error(payload.error || `Request failed (${res.status})`);
+        }
+
+        setLoadingProgress(100);
+        localStorage.setItem('scamsniffer-url', url);
+        localStorage.setItem('scamsniffer-last-review', JSON.stringify(payload));
+        setTimeout(() => {
+          window.location.href = `results.html?analysis_id=${encodeURIComponent(payload.analysis_id)}&url=${encodeURIComponent(url)}`;
+        }, 320);
+      } catch (err) {
+        stopLoadingAnimation();
+        showError(err.message || 'Analysis failed. Please try again.');
+      } finally {
+        exploreBtn.disabled = false;
+        cancelBtn.disabled = false;
+      }
+    }
+
+    exploreBtn.addEventListener('click', () => {
+      const val = urlInput.value.trim();
+      errorMsg.classList.remove('show');
+      if (!val || !isValidUrl(val)) {
+        showError('Please enter a valid product URL (e.g. https://amazon.in/...)');
+        urlInput.style.borderColor = 'var(--danger)';
+        urlInput.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.12)';
+        setTimeout(() => { urlInput.style.borderColor = ''; urlInput.style.boxShadow = ''; }, 1600);
+        return;
+      }
+      runReviewAnalysis(val);
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      urlInput.value = '';
+      errorMsg.classList.remove('show');
+      urlInput.focus();
+    });
+
+    urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') exploreBtn.click(); });
+    urlInput.addEventListener('input', () => errorMsg.classList.remove('show'));
+
+    randomizeHeroStats();
+  </script>
+</body>
+</html>
+
+
+
+

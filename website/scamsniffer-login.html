@@ -1,0 +1,675 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scamsniffer - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100vh; width: 100%; overflow-x: hidden; }
+
+    /*  CSS Variables  */
+    :root {
+      --bg:           #050508;
+      --card-bg:      linear-gradient(160deg, #0c1220 0%, #080d18 100%);
+      --card-border:  rgba(59,130,246,0.18);
+      --card-shadow:  0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+      --text:         #e2e8f0;
+      --text-muted:   #475569;
+      --text-faint:   #1e3a5f;
+      --input-bg:     rgba(255,255,255,0.04);
+      --input-border: rgba(255,255,255,0.09);
+      --input-focus-border: #3b82f6;
+      --input-focus-shadow: rgba(59,130,246,0.15);
+      --input-color:  #e2e8f0;
+      --input-placeholder: #1e3a5f;
+      --label:        #475569;
+      --divider:      rgba(255,255,255,0.07);
+      --divider-text: #1e3a5f;
+      --sec-btn-border: rgba(255,255,255,0.1);
+      --sec-btn-color: #475569;
+      --sec-btn-hover-bg: rgba(255,255,255,0.05);
+      --sec-btn-hover-border: rgba(255,255,255,0.2);
+      --sec-btn-hover-color: #94a3b8;
+      --reg-btn-bg:   transparent;
+      --reg-btn-border: rgba(59,130,246,0.2);
+      --reg-btn-color: #60a5fa;
+      --reg-btn-hover-bg: rgba(59,130,246,0.08);
+      --reg-btn-hover-border: rgba(59,130,246,0.4);
+      --footer-color: #1e3a5f;
+      --footer-link:  #2563eb;
+      --badge-bg:     rgba(34,197,94,0.08);
+      --badge-border: rgba(34,197,94,0.18);
+      --badge-color:  #4ade80;
+      --eye-color:    #475569;
+      --eye-hover:    #60a5fa;
+      --eye-hover-bg: rgba(59,130,246,0.1);
+      --toggle-bg:    rgba(255,255,255,0.07);
+      --toggle-border:rgba(255,255,255,0.1);
+      --toggle-color: #94a3b8;
+      --toggle-shadow:0 4px 14px rgba(0,0,0,0.3);
+      --pill-bg:      rgba(59,130,246,0.25);
+      --knob-color:   #60a5fa;
+      --knob-left:    3px;
+      --grid-color:   rgba(59,130,246,0.05);
+      --orb1:         rgba(59,130,246,0.13);
+      --orb2:         rgba(29,78,216,0.1);
+      --top-line:     linear-gradient(90deg,transparent,#3b82f6,#60a5fa,transparent);
+      --logo-bg:      rgba(59,130,246,0.12);
+      --logo-border:  rgba(59,130,246,0.22);
+      --logo-gradient:linear-gradient(135deg,#60a5fa 0%,#3b82f6 50%,#818cf8 100%);
+      --forgot-color: #3b82f6;
+      --forgot-hover: #60a5fa;
+    }
+
+    body.light {
+      --bg:           #f0f4ff;
+      --card-bg:      white;
+      --card-border:  rgba(37,99,235,0.12);
+      --card-shadow:  0 20px 60px rgba(37,99,235,0.1), 0 4px 20px rgba(0,0,0,0.06);
+      --text:         #0f172a;
+      --text-muted:   #64748b;
+      --text-faint:   #94a3b8;
+      --input-bg:     #f8faff;
+      --input-border: rgba(37,99,235,0.15);
+      --input-focus-border: #2563eb;
+      --input-focus-shadow: rgba(37,99,235,0.12);
+      --input-color:  #0f172a;
+      --input-placeholder: #cbd5e1;
+      --label:        #64748b;
+      --divider:      rgba(37,99,235,0.1);
+      --divider-text: #94a3b8;
+      --sec-btn-border: rgba(37,99,235,0.15);
+      --sec-btn-color: #64748b;
+      --sec-btn-hover-bg: #f8faff;
+      --sec-btn-hover-border: rgba(37,99,235,0.3);
+      --sec-btn-hover-color: #374151;
+      --reg-btn-bg:   #eff6ff;
+      --reg-btn-border: rgba(37,99,235,0.2);
+      --reg-btn-color: #2563eb;
+      --reg-btn-hover-bg: #dbeafe;
+      --reg-btn-hover-border: rgba(37,99,235,0.35);
+      --footer-color: #94a3b8;
+      --footer-link:  #2563eb;
+      --badge-bg:     #f0fdf4;
+      --badge-border: rgba(34,197,94,0.25);
+      --badge-color:  #16a34a;
+      --eye-color:    #94a3b8;
+      --eye-hover:    #2563eb;
+      --eye-hover-bg: rgba(37,99,235,0.08);
+      --toggle-bg:    white;
+      --toggle-border:rgba(37,99,235,0.2);
+      --toggle-color: #1e40af;
+      --toggle-shadow:0 4px 14px rgba(37,99,235,0.15);
+      --pill-bg:      #2563eb;
+      --knob-color:   white;
+      --knob-left:    19px;
+      --grid-color:   rgba(37,99,235,0.07);
+      --orb1:         rgba(59,130,246,0.15);
+      --orb2:         rgba(99,102,241,0.1);
+      --top-line:     linear-gradient(90deg,transparent,#2563eb,#3b82f6,transparent);
+      --logo-bg:      #eff6ff;
+      --logo-border:  rgba(37,99,235,0.2);
+      --logo-gradient:linear-gradient(135deg,#1d4ed8 0%,#2563eb 60%,#4f46e5 100%);
+      --forgot-color: #2563eb;
+      --forgot-hover: #1d4ed8;
+    }
+
+    /*  Page  */
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    /*  Background  */
+    .bg-grid {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 44px 44px;
+      transition: opacity 0.4s;
+    }
+    .orb {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      transition: background 0.4s;
+    }
+    .orb-1 {
+      width: 520px; height: 520px; top: -140px; left: -100px;
+      background: radial-gradient(circle, var(--orb1) 0%, transparent 65%);
+    }
+    .orb-2 {
+      width: 400px; height: 400px; bottom: -100px; right: -60px;
+      background: radial-gradient(circle, var(--orb2) 0%, transparent 65%);
+    }
+
+    /*  Theme Toggle  */
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 200;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: 50px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
+      background: var(--toggle-bg); color: var(--toggle-color);
+      border: 1px solid var(--toggle-border);
+      box-shadow: var(--toggle-shadow);
+      transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .theme-toggle:hover { filter: brightness(1.1); }
+    .toggle-icon { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; }
+    .toggle-pill {
+      width: 36px; height: 20px; border-radius: 20px; position: relative;
+      background: var(--pill-bg); transition: background 0.3s;
+      flex-shrink: 0;
+    }
+    .toggle-knob {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--knob-color);
+      position: absolute; top: 3px; left: var(--knob-left);
+      transition: left 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.3s;
+    }
+
+    /*  Card  */
+    .login-card {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 440px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 44px 40px;
+      box-shadow: var(--card-shadow);
+      animation: cardIn 0.55s cubic-bezier(0.16,1,0.3,1) both;
+      transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
+      to   { opacity: 1; transform: none; }
+    }
+    .card-top-line {
+      position: absolute; top: 0; left: 15%; right: 15%;
+      height: 2px; border-radius: 0 0 4px 4px;
+      background: var(--top-line);
+      transition: background 0.4s;
+    }
+
+    /*  Logo Section  */
+    .logo-section { text-align: center; margin-bottom: 32px; }
+    .logo-icon-wrap {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px; border-radius: 18px; margin-bottom: 14px;
+      background: var(--logo-bg); border: 1px solid var(--logo-border);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .logo-title {
+      font-size: 26px; font-weight: 800; letter-spacing: -0.8px; line-height: 1;
+      background: var(--logo-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; transition: background 0.4s;
+    }
+    .logo-sub { font-size: 13px; color: var(--text-muted); margin-top: 5px; letter-spacing: 0.02em; transition: color 0.4s; }
+    .secure-badge {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 10px;
+      border-radius: 20px; padding: 3px 10px; font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      color: var(--badge-color); transition: all 0.4s;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
+      display: inline-block; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /*  Error Box  */
+    .error-box {
+      display: none; align-items: flex-start; gap: 10px;
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 18px;
+      animation: errIn 0.35s ease;
+    }
+    .error-box.show { display: flex; }
+    body.light .error-box { background: #fef2f2; border-color: rgba(239,68,68,0.3); }
+    .error-icon { flex-shrink: 0; margin-top: 1px; color: #f87171; }
+    body.light .error-icon { color: #ef4444; }
+    .error-text { font-size: 13.5px; line-height: 1.4; color: #fca5a5; }
+    body.light .error-text { color: #dc2626; }
+    @keyframes errIn { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: none; } }
+
+    /*  Form Fields  */
+    .field-group { margin-bottom: 18px; }
+    .field-label {
+      display: block; font-size: 12.5px; font-weight: 600;
+      margin-bottom: 7px; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--label); transition: color 0.4s;
+    }
+    .input-wrap { position: relative; }
+    .field-input {
+      width: 100%; padding: 12px 14px; border-radius: 10px;
+      font-size: 14.5px; font-family: 'Outfit', sans-serif;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      color: var(--input-color); outline: none;
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, color 0.4s;
+    }
+    .field-input::placeholder { color: var(--input-placeholder); }
+    .field-input:focus {
+      background: var(--input-bg);
+      border-color: var(--input-focus-border);
+      box-shadow: 0 0 0 3px var(--input-focus-shadow);
+    }
+    .field-input.pw-input { padding-right: 46px; }
+    .field-input.error-field { border-color: rgba(239,68,68,0.5) !important; }
+    .field-err {
+      display: none; align-items: center; gap: 4px;
+      font-size: 12px; margin-top: 5px; color: #f87171;
+    }
+    body.light .field-err { color: #ef4444; }
+    .field-err.show { display: flex; }
+
+    /*  Eye Toggle  */
+    .eye-btn {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      padding: 4px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--eye-color); transition: color 0.2s, background 0.2s;
+    }
+    .eye-btn:hover { color: var(--eye-hover); background: var(--eye-hover-bg); }
+
+    /*  Forgot Password  */
+    .forgot-row { text-align: right; margin-bottom: 24px; margin-top: -4px; }
+    .forgot-link {
+      font-size: 13px; font-weight: 500; text-decoration: none;
+      color: var(--forgot-color); transition: color 0.2s;
+    }
+    .forgot-link:hover { color: var(--forgot-hover); }
+
+    /*  Buttons  */
+    .btn-primary {
+      width: 100%; padding: 13.5px; border-radius: 10px; border: none;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      font-family: 'Outfit', sans-serif; letter-spacing: 0.01em;
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white; box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+      transition: transform 0.22s, box-shadow 0.22s, opacity 0.22s;
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.5); }
+    .btn-primary:active:not(:disabled) { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .btn-secondary {
+      width: 100%; padding: 12.5px; border-radius: 10px;
+      font-size: 14.5px; font-weight: 500; cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+      border: 1px solid var(--sec-btn-border);
+      color: var(--sec-btn-color);
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--sec-btn-hover-bg);
+      border-color: var(--sec-btn-hover-border);
+      color: var(--sec-btn-hover-color);
+    }
+    .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /*  Divider  */
+    .divider { display: flex; align-items: center; gap: 12px; margin: 22px 0; }
+    .divider-line { flex: 1; height: 1px; background: var(--divider); transition: background 0.4s; }
+    .divider-text { font-size: 12px; white-space: nowrap; color: var(--divider-text); transition: color 0.4s; }
+
+    /*  Register Link  */
+    .register-btn {
+      display: block; width: 100%; padding: 12.5px; border-radius: 10px;
+      text-align: center; font-size: 14px; font-weight: 500;
+      text-decoration: none; font-family: 'Outfit', sans-serif;
+      background: var(--reg-btn-bg); border: 1px solid var(--reg-btn-border);
+      color: var(--reg-btn-color);
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .register-btn:hover {
+      background: var(--reg-btn-hover-bg);
+      border-color: var(--reg-btn-hover-border);
+    }
+
+    /*  Footer  */
+    .card-footer {
+      text-align: center; margin-top: 22px;
+      font-size: 11.5px; line-height: 1.7;
+      color: var(--footer-color); transition: color 0.4s;
+    }
+    .footer-link { color: var(--footer-link); text-decoration: none; transition: color 0.2s; }
+    .footer-link:hover { filter: brightness(1.3); }
+
+    /*  Spinner  */
+    .spinner {
+      width: 17px; height: 17px; display: none;
+      animation: spin 0.8s linear infinite;
+    }
+    .spinner.show { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-label { display: inline; }
+
+    /*  Responsive  */
+    @media (max-width: 480px) {
+      .login-card { padding: 36px 24px; }
+      .logo-title  { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle theme">
+    <span class="toggle-icon" id="themeIcon">
+      <!-- Moon SVG (dark default) -->
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+    </span>
+    <span id="themeLabel">Dark</span>
+    <div class="toggle-pill">
+      <div class="toggle-knob" id="toggleKnob"></div>
+    </div>
+  </button>
+
+  <!-- Login Card -->
+  <div class="login-card">
+    <div class="card-top-line"></div>
+
+    <!-- Logo -->
+    <div class="logo-section">
+      <div class="logo-icon-wrap">
+         <img src="logo1.png" alt="Scamsniffer Logo" width="60" height="65" 
+         style="object-fit: contain;" />
+      </div>
+      <div class="logo-title">Scamsniffer</div>
+      <div class="logo-sub">Fake Review Detection Platform</div>
+      <div class="secure-badge">
+        <span class="badge-dot"></span>
+        <span>SSL Secured</span>
+      </div>
+    </div>
+
+    <!-- Error Box -->
+    <div class="error-box" id="errorBox">
+      <div class="error-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <p class="error-text" id="errorText">Invalid email or password. Please check your credentials and try again.</p>
+    </div>
+
+    <!-- Form -->
+    <form id="loginForm" novalidate onsubmit="handleSubmit(event)">
+
+      <!-- Email -->
+      <div class="field-group">
+        <label class="field-label" for="email">Email Address</label>
+        <div class="input-wrap">
+          <input
+            class="field-input"
+            type="email" id="email"
+            placeholder="you@company.com"
+            autocomplete="email"
+            oninput="clearFieldError('email')"
+            onblur="validateEmailField()"
+          />
+        </div>
+        <div class="field-err" id="emailErr">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span id="emailErrText">Enter a valid email address.</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field-group">
+        <label class="field-label" for="password">Password</label>
+        <div class="input-wrap">
+          <input
+            class="field-input pw-input"
+            type="password" id="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            oninput="clearFieldError('password')"
+            onblur="validatePasswordField()"
+          />
+          <button type="button" class="eye-btn" onclick="togglePassword()" id="eyeBtn" tabindex="-1" aria-label="Toggle password visibility">
+            <svg id="eyeIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+              <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <div class="field-err" id="passwordErr">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span>Password is required.</span>
+        </div>
+      </div>
+
+      <!-- Forgot -->
+      <div class="forgot-row">
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit" class="btn-primary" id="loginBtn">
+        <svg class="spinner" id="spinner" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+          <path d="M12 2a10 10 0 0110 10" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="btn-label" id="loginBtnLabel">Sign In to Scamsniffer</span>
+      </button>
+
+      <!-- Cancel Button -->
+      <button type="button" class="btn-secondary" id="cancelBtn" onclick="handleCancel()">
+        Cancel
+      </button>
+
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">New to the platform?</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Register -->
+    <a href="scamsniffer-register.html" class="register-btn">Create a free account -></a>
+
+    <!-- Footer -->
+    <div class="card-footer">
+      Protected by enterprise-grade encryption.<br/>
+      By signing in, you agree to our
+      Terms of Service</a> &amp;
+      Privacy Policy</a>.
+    </div>
+  </div>
+
+  <script>
+  let isDark = localStorage.getItem('scamsniffer-theme') !== 'light';
+
+  const sunSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+  const moonSVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
+
+  function toggleTheme() {
+    isDark = !isDark;
+    localStorage.setItem('scamsniffer-theme', isDark ? 'dark' : 'light');
+    applyTheme();
+  }
+
+  function applyTheme() {
+    document.body.classList.toggle('light', !isDark);
+    document.getElementById('themeIcon').innerHTML = isDark ? moonSVG : sunSVG;
+    document.getElementById('themeLabel').textContent = isDark ? 'Dark' : 'Light';
+  }
+
+  function isValidEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  function validateEmailField() {
+    const val = document.getElementById('email').value.trim();
+    const err = document.getElementById('emailErr');
+    const inp = document.getElementById('email');
+    if (!isValidEmail(val)) {
+      err.classList.add('show');
+      inp.classList.add('error-field');
+      return false;
+    }
+    err.classList.remove('show');
+    inp.classList.remove('error-field');
+    return true;
+  }
+
+  function validatePasswordField() {
+    const val = document.getElementById('password').value;
+    const err = document.getElementById('passwordErr');
+    const inp = document.getElementById('password');
+    if (!val) {
+      err.classList.add('show');
+      inp.classList.add('error-field');
+      return false;
+    }
+    err.classList.remove('show');
+    inp.classList.remove('error-field');
+    return true;
+  }
+
+  function clearFieldError(field) {
+    const errEl = document.getElementById(field + 'Err');
+    const inputEl = document.getElementById(field);
+    if (errEl) errEl.classList.remove('show');
+    if (inputEl) inputEl.classList.remove('error-field');
+    document.getElementById('errorBox').classList.remove('show');
+  }
+
+  function setLoading(on) {
+    const btn = document.getElementById('loginBtn');
+    const label = document.getElementById('loginBtnLabel');
+    const spinner = document.getElementById('spinner');
+    const cancel = document.getElementById('cancelBtn');
+
+    btn.disabled = on;
+    cancel.disabled = on;
+    spinner.classList.toggle('show', on);
+    label.textContent = on ? 'Signing in...' : 'Sign In to Scamsniffer';
+    document.getElementById('email').disabled = on;
+    document.getElementById('password').disabled = on;
+  }
+
+  function showError(msg) {
+    document.getElementById('errorText').textContent = msg;
+    document.getElementById('errorBox').classList.add('show');
+  }
+
+  function toProfileUser(user) {
+    const createdAt = user && user.created_at ? new Date(user.created_at) : null;
+    const created = createdAt
+      ? createdAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      : '';
+    const joinedFull = createdAt
+      ? createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : '';
+
+    return {
+      firstName: (user && user.first_name) || '',
+      lastName: (user && user.last_name) || '',
+      email: (user && user.email) || '',
+      phone: (user && user.phone) || '',
+      created,
+      joinedFull,
+    };
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const emailOk = validateEmailField();
+    const pwOk = validatePasswordField();
+    if (!emailOk || !pwOk) return;
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    setLoading(true);
+    document.getElementById('errorBox').classList.remove('show');
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const payload = await res.json();
+      if (!res.ok || !payload.ok) {
+        throw new Error(payload.error || 'Invalid email or password.');
+      }
+
+      localStorage.setItem('scamsniffer-session', payload.token || '');
+      localStorage.setItem('scamsniffer-user', JSON.stringify(toProfileUser(payload.user || {})));
+      window.location.href = 'profile.html';
+    } catch (err) {
+      showError(err.message || 'Invalid email or password. Please check your credentials and try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleCancel() {
+    document.getElementById('email').value = '';
+    document.getElementById('password').value = '';
+    ['email', 'password'].forEach(f => {
+      const errEl = document.getElementById(f + 'Err');
+      const inputEl = document.getElementById(f);
+      if (errEl) errEl.classList.remove('show');
+      if (inputEl) inputEl.classList.remove('error-field');
+    });
+    document.getElementById('errorBox').classList.remove('show');
+  }
+
+  let pwVisible = false;
+  const eyeOpen = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  const eyeClosed = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
+  function togglePassword() {
+    pwVisible = !pwVisible;
+    const inp = document.getElementById('password');
+    inp.type = pwVisible ? 'text' : 'password';
+    document.getElementById('eyeBtn').innerHTML = pwVisible ? eyeOpen : eyeClosed;
+  }
+
+  applyTheme();
+
+  if (localStorage.getItem('scamsniffer-session')) {
+    // Already signed in
+    // Keep user on login page only if they intentionally opened it.
+  }
+</script>
+</body>
+</html>
+
+
+
+

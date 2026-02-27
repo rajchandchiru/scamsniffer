@@ -1,0 +1,798 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scamsniffer - AI Fake Review Detection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { min-height: 100vh; overflow-x: hidden; }
+
+    /*  CSS Variables  */
+    :root {
+      --bg:            #04060f;
+      --bg2:           #070b18;
+      --nav-bg:        rgba(4,6,15,0.88);
+      --card-bg:       rgba(10,16,36,0.7);
+      --card-border:   rgba(59,130,246,0.15);
+      --text:          #e8edf8;
+      --text-sub:      #64748b;
+      --text-faint:    #1e3a5f;
+      --accent:        #3b82f6;
+      --accent2:       #60a5fa;
+      --accent-glow:   rgba(59,130,246,0.25);
+      --grid:          rgba(59,130,246,0.04);
+      --divider:       rgba(59,130,246,0.12);
+      --menu-bg:       #07091a;
+      --menu-border:   rgba(59,130,246,0.15);
+      --toggle-bg:     rgba(255,255,255,0.07);
+      --toggle-border: rgba(255,255,255,0.1);
+      --toggle-color:  #94a3b8;
+      --pill:          rgba(59,130,246,0.25);
+      --knob:          #60a5fa;
+      --knob-x:        3px;
+      --orb1:          rgba(59,130,246,0.12);
+      --orb2:          rgba(99,102,241,0.08);
+      --hero-gradient: linear-gradient(135deg,#60a5fa 0%,#3b82f6 40%,#818cf8 100%);
+      --badge-bg:      rgba(59,130,246,0.1);
+      --badge-border:  rgba(59,130,246,0.22);
+      --badge-color:   #60a5fa;
+      --meter-bg:      rgba(255,255,255,0.06);
+      --sec-btn-border:rgba(255,255,255,0.12);
+      --sec-btn-color: #94a3b8;
+      --footer-border: rgba(255,255,255,0.06);
+    }
+    body.light {
+      --bg:            #f0f5ff;
+      --bg2:           #e8efff;
+      --nav-bg:        rgba(240,245,255,0.9);
+      --card-bg:       rgba(255,255,255,0.85);
+      --card-border:   rgba(37,99,235,0.14);
+      --text:          #0f172a;
+      --text-sub:      #64748b;
+      --text-faint:    #cbd5e1;
+      --accent:        #2563eb;
+      --accent2:       #3b82f6;
+      --accent-glow:   rgba(37,99,235,0.18);
+      --grid:          rgba(37,99,235,0.055);
+      --divider:       rgba(37,99,235,0.1);
+      --menu-bg:       #ffffff;
+      --menu-border:   rgba(37,99,235,0.14);
+      --toggle-bg:     #ffffff;
+      --toggle-border: rgba(37,99,235,0.2);
+      --toggle-color:  #1e40af;
+      --pill:          #2563eb;
+      --knob:          #ffffff;
+      --knob-x:        19px;
+      --orb1:          rgba(59,130,246,0.12);
+      --orb2:          rgba(99,102,241,0.07);
+      --hero-gradient: linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#4f46e5 100%);
+      --badge-bg:      #eff6ff;
+      --badge-border:  rgba(37,99,235,0.2);
+      --badge-color:   #1d4ed8;
+      --meter-bg:      rgba(37,99,235,0.06);
+      --sec-btn-border:rgba(37,99,235,0.2);
+      --sec-btn-color: #374151;
+      --footer-border: rgba(37,99,235,0.1);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    /*  BG Layers  */
+    .bg-fixed {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 48px 48px;
+      transition: background-image 0.4s;
+    }
+    .orb {
+      position: absolute; border-radius: 50%;
+      transition: background 0.4s;
+    }
+    .orb-1 { width: 700px; height: 700px; top: -200px; left: -180px; background: radial-gradient(circle, var(--orb1) 0%, transparent 60%); }
+    .orb-2 { width: 500px; height: 500px; bottom: -100px; right: -100px; background: radial-gradient(circle, var(--orb2) 0%, transparent 60%); }
+    .orb-3 { width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%); }
+
+    /*  Overlay  */
+    .overlay {
+      position: fixed; inset: 0; z-index: 150;
+      background: rgba(0,0,0,0.55); opacity: 0; pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .overlay.show { opacity: 1; pointer-events: all; }
+
+    /*  Side Menu  */
+    .side-menu {
+      position: fixed; top: 0; left: 0; height: 100vh; width: 280px; z-index: 200;
+      background: var(--menu-bg); border-right: 1px solid var(--menu-border);
+      transform: translateX(-100%);
+      transition: transform 0.38s cubic-bezier(0.16,1,0.3,1), background 0.4s, border-color 0.4s;
+      display: flex; flex-direction: column; padding: 0;
+      box-shadow: 6px 0 40px rgba(0,0,0,0.5);
+    }
+    .side-menu.open { transform: translateX(0); }
+
+    .menu-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 24px 20px;
+      border-bottom: 1px solid var(--menu-border);
+    }
+    .menu-logo { display: flex; align-items: center; gap: 10px; }
+    .menu-logo-text { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; background: var(--hero-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .menu-close {
+      width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer;
+      background: rgba(255,255,255,0.05); color: var(--text-sub);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .menu-close:hover { background: rgba(239,68,68,0.1); color: #f87171; }
+
+    .menu-nav { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
+    .menu-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 16px; border-radius: 12px;
+      text-decoration: none; font-size: 15px; font-weight: 500; color: var(--text-sub);
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      cursor: pointer; border: 1px solid transparent;
+    }
+    .menu-item:hover {
+      background: var(--accent-glow); color: var(--accent2);
+      border-color: var(--card-border); transform: translateX(4px);
+    }
+    .menu-item-icon {
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      display: flex; align-items: center; justify-content: center; color: var(--accent2);
+    }
+    .menu-item-info { display: flex; flex-direction: column; }
+    .menu-item-label { font-size: 14px; font-weight: 600; }
+    .menu-item-desc { font-size: 11px; color: var(--text-sub); margin-top: 1px; }
+
+    .menu-footer {
+      padding: 20px 24px; border-top: 1px solid var(--menu-border);
+      font-size: 11.5px; color: var(--text-sub); font-family: 'JetBrains Mono', monospace;
+    }
+
+    /*  Nav Bar  */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 66px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--divider);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .nav-left { display: flex; align-items: center; gap: 14px; }
+    .hamburger {
+      width: 40px; height: 40px; border-radius: 10px; border: none; cursor: pointer;
+      background: var(--toggle-bg); border: 1px solid var(--toggle-border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .hamburger:hover { background: var(--accent-glow); }
+    .ham-line {
+      width: 18px; height: 2px; border-radius: 2px; background: var(--text-sub);
+      transition: background 0.2s, transform 0.3s, opacity 0.3s, width 0.3s;
+    }
+    .hamburger.active .ham-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active .ham-line:nth-child(2) { opacity: 0; width: 0; }
+    .hamburger.active .ham-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-brand-text { font-size: 19px; font-weight: 800; letter-spacing: -0.6px; background: var(--hero-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .theme-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 13px; border-radius: 50px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 12.5px; font-weight: 500;
+      background: var(--toggle-bg); color: var(--toggle-color);
+      border: 1px solid var(--toggle-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+    .theme-toggle:hover { filter: brightness(1.1); }
+    .toggle-icon { width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .t-pill { width: 34px; height: 19px; border-radius: 20px; background: var(--pill); position: relative; transition: background 0.3s; flex-shrink: 0; }
+    .t-knob { width: 13px; height: 13px; border-radius: 50%; background: var(--knob); position: absolute; top: 3px; left: var(--knob-x); transition: left 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.3s; }
+    .toggle-label { display: none; }
+    @media (min-width: 480px) { .toggle-label { display: inline; } }
+
+    .nav-cta {
+      padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+      background: linear-gradient(135deg,#2563eb,#1d4ed8);
+      color: white; text-decoration: none;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: none;
+    }
+    @media (min-width: 640px) { .nav-cta { display: flex; align-items: center; } }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37,99,235,0.5); }
+
+    /*  Page Content  */
+    .page { position: relative; z-index: 1; }
+
+    /*  Hero  */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 100px 24px 60px; text-align: center; flex-direction: column;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      color: var(--badge-color); border-radius: 50px;
+      padding: 5px 14px; font-size: 12px; font-family: 'JetBrains Mono', monospace;
+      font-weight: 500; letter-spacing: 0.04em; margin-bottom: 32px;
+      animation: fadeUp 0.6s 0.1s both;
+    }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+
+    .hero-headline {
+      font-size: clamp(38px, 7vw, 82px);
+      font-weight: 900; line-height: 1.05; letter-spacing: -2.5px;
+      max-width: 900px; margin-bottom: 12px;
+      animation: fadeUp 0.65s 0.2s both;
+    }
+    .hero-headline .gradient-word {
+      background: var(--hero-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-slogan {
+      font-size: clamp(16px, 2.5vw, 22px); font-weight: 500;
+      color: var(--text-sub); letter-spacing: -0.3px; margin-bottom: 22px;
+      font-family: 'JetBrains Mono', monospace;
+      animation: fadeUp 0.65s 0.3s both;
+    }
+    .hero-slogan span { color: var(--accent2); }
+    .hero-desc {
+      font-size: clamp(14px, 1.8vw, 17px); color: var(--text-sub);
+      max-width: 580px; line-height: 1.7; margin-bottom: 44px;
+      animation: fadeUp 0.65s 0.4s both;
+    }
+    .hero-buttons {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.65s 0.5s both;
+    }
+    .btn-hero-primary {
+      padding: 15px 32px; border-radius: 12px; border: none; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+      background: linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);
+      color: white; box-shadow: 0 6px 24px rgba(37,99,235,0.45);
+      text-decoration: none; display: flex; align-items: center; gap: 9px;
+      transition: transform 0.22s, box-shadow 0.22s;
+      position: relative; overflow: hidden;
+    }
+    .btn-hero-primary::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(37,99,235,0.55); }
+    .btn-hero-primary:hover::after { opacity: 1; }
+
+    .btn-hero-secondary {
+      padding: 15px 32px; border-radius: 12px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 600;
+      background: transparent; border: 1.5px solid var(--sec-btn-border);
+      color: var(--sec-btn-color); text-decoration: none;
+      display: flex; align-items: center; gap: 9px;
+      transition: background 0.22s, border-color 0.22s, color 0.22s, transform 0.22s;
+    }
+    .btn-hero-secondary:hover {
+      background: var(--accent-glow); border-color: var(--accent);
+      color: var(--accent2); transform: translateY(-3px);
+    }
+
+    /* Hero Stats */
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 64px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.65s 0.65s both;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -1px;
+      background: var(--hero-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-label { font-size: 12px; color: var(--text-sub); margin-top: 3px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+    .stat-divider { width: 1px; background: var(--divider); align-self: stretch; }
+    @media (max-width: 480px) { .stat-divider { display: none; } .hero-stats { gap: 24px; } }
+
+    @keyframes fadeUp { from { opacity:0; transform: translateY(22px); } to { opacity:1; transform: none; } }
+
+    /*  Features Section  */
+    .features {
+      padding: 80px 24px 100px;
+      max-width: 1140px; margin: 0 auto;
+    }
+    .section-eyebrow {
+      text-align: center; margin-bottom: 14px;
+      font-size: 11.5px; font-family: 'JetBrains Mono', monospace;
+      font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent2);
+    }
+    .section-title {
+      text-align: center; margin-bottom: 14px;
+      font-size: clamp(28px, 4vw, 46px); font-weight: 800; letter-spacing: -1px; line-height: 1.1;
+    }
+    .section-sub {
+      text-align: center; color: var(--text-sub); font-size: 15px;
+      max-width: 520px; margin: 0 auto 60px; line-height: 1.6;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .feat-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 20px; padding: 32px 28px;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s, background 0.4s;
+      position: relative; overflow: hidden; cursor: default;
+    }
+    .feat-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .feat-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,0.35); border-color: rgba(59,130,246,0.35); }
+    .feat-card:hover::before { opacity: 1; }
+
+    .card-icon-wrap {
+      width: 58px; height: 58px; border-radius: 16px; margin-bottom: 22px;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; position: relative;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .feat-card:hover .card-icon-wrap { background: var(--accent-glow); border-color: var(--accent); }
+
+    .card-title { font-size: 19px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.4px; }
+    .card-desc { font-size: 14px; color: var(--text-sub); line-height: 1.65; margin-bottom: 24px; transition: color 0.4s; }
+
+    /* Card 1  Risk Meter */
+    .risk-meter { margin-top: 4px; }
+    .meter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .meter-label { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-sub); letter-spacing: 0.05em; text-transform: uppercase; }
+    .meter-score { font-size: 22px; font-weight: 800; color: #22c55e; font-family: 'JetBrains Mono', monospace; }
+    .meter-bar-bg { height: 8px; border-radius: 10px; background: var(--meter-bg); overflow: hidden; margin-bottom: 10px; }
+    .meter-bar-fill {
+      height: 100%; border-radius: 10px; width: 0%;
+      background: linear-gradient(90deg,#22c55e,#4ade80);
+      transition: width 1.4s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 10px rgba(34,197,94,0.5);
+    }
+    .meter-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .meter-tag {
+      font-size: 10.5px; font-family: 'JetBrains Mono', monospace; padding: 3px 8px;
+      border-radius: 6px; border: 1px solid;
+    }
+    .tag-green { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.2); color: #4ade80; }
+    .tag-red   { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2); color: #f87171; }
+    .tag-yellow{ background: rgba(251,191,36,0.08); border-color: rgba(251,191,36,0.2); color: #fbbf24; }
+
+    /* Card 2  Comparison Visual */
+    .compare-visual { margin-top: 4px; }
+    .compare-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .compare-product { font-size: 11.5px; font-weight: 600; width: 64px; flex-shrink: 0; color: var(--text); }
+    .compare-bar-wrap { flex: 1; height: 7px; border-radius: 10px; background: var(--meter-bg); overflow: hidden; }
+    .compare-bar {
+      height: 100%; border-radius: 10px; width: 0%;
+      transition: width 1.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .bar-blue  { background: linear-gradient(90deg,#3b82f6,#60a5fa); box-shadow: 0 0 8px rgba(59,130,246,0.45); }
+    .bar-green { background: linear-gradient(90deg,#22c55e,#4ade80); box-shadow: 0 0 8px rgba(34,197,94,0.4); }
+    .bar-amber { background: linear-gradient(90deg,#f59e0b,#fbbf24); box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+    .compare-pct { font-size: 11.5px; font-family: 'JetBrains Mono', monospace; width: 36px; text-align: right; color: var(--text-sub); }
+    .compare-badge-row { display: flex; gap: 8px; margin-top: 6px; }
+    .c-badge {
+      flex: 1; text-align: center; padding: 7px 4px; border-radius: 10px; border: 1px solid var(--card-border);
+      font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-sub);
+      background: var(--badge-bg); transition: all 0.4s;
+    }
+    .c-badge .c-b-val { font-size: 15px; font-weight: 700; display: block; color: var(--accent2); margin-bottom: 2px; }
+
+    /* Card 3  Chat */
+    .chat-visual { margin-top: 4px; display: flex; flex-direction: column; gap: 10px; }
+    .chat-bubble {
+      padding: 10px 14px; border-radius: 14px; font-size: 12.5px; line-height: 1.5;
+      max-width: 86%; animation: bubbleIn 0.5s both;
+    }
+    .chat-user { background: linear-gradient(135deg,#2563eb,#1d4ed8); color: white; align-self: flex-end; border-radius: 14px 14px 4px 14px; }
+    .chat-ai   { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--text); align-self: flex-start; border-radius: 14px 14px 14px 4px; }
+    @keyframes bubbleIn { from { opacity:0; transform: scale(0.9) translateY(6px); } to { opacity:1; transform: none; } }
+    .chat-bubble:nth-child(1) { animation-delay: 0.1s; }
+    .chat-bubble:nth-child(2) { animation-delay: 0.5s; }
+    .chat-bubble:nth-child(3) { animation-delay: 0.9s; }
+    .typing-dots { display: flex; gap: 4px; align-items: center; padding: 12px 14px; background: var(--badge-bg); border: 1px solid var(--badge-border); border-radius: 14px 14px 14px 4px; align-self: flex-start; width: fit-content; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); animation: typingBounce 1.2s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-7px)} }
+
+    /*  Footer Strip  */
+    .footer {
+      border-top: 1px solid var(--footer-border);
+      padding: 28px 24px; text-align: center;
+      font-size: 12.5px; color: var(--text-sub);
+      position: relative; z-index: 1;
+      transition: border-color 0.4s;
+    }
+    .footer a { color: var(--accent2); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /*  Scroll Reveal  */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal:nth-child(3) { transition-delay: 0.2s; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 90px 18px 50px; }
+      .features { padding: 60px 18px 70px; }
+      .feat-card { padding: 26px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-fixed">
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <!-- Side Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <div class="menu-header">
+      <div class="menu-logo">
+        <img src="logo1.png" alt="Scamsniffer Logo" style="width:32px;height:32px;object-fit:contain;"/>
+        <span class="menu-logo-text">Scamsniffer</span>
+      </div>
+      <button class="menu-close" onclick="closeMenu()" aria-label="Close menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="menu-nav">
+      <a href="profile.html" class="menu-item" onclick="closeMenu()">
+        <div class="menu-item-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="menu-item-info">
+          <span class="menu-item-label">Profile</span>
+          <span class="menu-item-desc">Manage your account</span>
+        </div>
+      </a>
+      <a href="analyzer.html" class="menu-item" onclick="closeMenu()">
+        <div class="menu-item-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="menu-item-info">
+          <span class="menu-item-label">Fake Review</span>
+          <span class="menu-item-desc">Analyze review authenticity</span>
+        </div>
+      </a>
+      <a href="comparison-input.html" class="menu-item" onclick="closeMenu()">
+        <div class="menu-item-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="menu-item-info">
+          <span class="menu-item-label">Product Comparison</span>
+          <span class="menu-item-desc">Compare across platforms</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="menu-footer">
+      v1.0.0 - AI-Powered - Secure
+    </div>
+  </nav>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+        <div class="ham-line"></div>
+      </button>
+      <a href="#" class="nav-brand">
+        <img src="logo1.png" alt="Scamsniffer Logo" style="width:38px;height:38px;object-fit:contain;"/>
+        <span class="nav-brand-text">Scamsniffer</span>
+      </a>
+    </div>
+
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="toggle-icon" id="themeIcon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </span>
+        <span class="toggle-label" id="themeLabel">Dark</span>
+        <div class="t-pill"><div class="t-knob" id="tKnob"></div></div>
+      </button>
+      <a href="scamsniffer-login.html" class="nav-cta">Sign In</a>
+    </div>
+  </header>
+
+  <!-- Page -->
+  <main class="page">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AI-Powered - Real-Time Detection - Trusted Platform
+      </div>
+      <h1 class="hero-headline">
+        Stop Trusting<br/><span class="gradient-word">Fake Reviews.</span>
+      </h1>
+      <p class="hero-slogan">Detect deception. <span>Protect decisions.</span></p>
+      <p class="hero-desc">
+        Scamsniffer uses advanced AI to analyze product reviews across platforms, calculate authenticity scores, and expose manipulated ratings before they mislead you.
+      </p>
+      <div class="hero-buttons">
+        <a href="analyzer.html" class="btn-hero-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Analyze Reviews
+        </a>
+        <a href="comparison-input.html" class="btn-hero-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Compare Products
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">98.4%</div>
+          <div class="stat-label">Detection Accuracy</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-num">2.1M+</div>
+          <div class="stat-label">Reviews Analyzed</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-num">&lt;1.2s</div>
+          <div class="stat-label">Avg Response Time</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+      <div class="section-eyebrow">Core Capabilities</div>
+      <h2 class="section-title">Everything you need to <span style="background:var(--hero-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">detect deception</span></h2>
+      <p class="section-sub">Three powerful tools that work together to give you the clearest picture of product review authenticity.</p>
+
+      <div class="cards-grid">
+
+        <!-- Card 1: Fake Review Detection -->
+        <div class="feat-card reveal">
+          <div class="card-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="card-title">Fake Review Detection</div>
+          <div class="card-desc">Analyze product reviews using AI to detect deceptive patterns and calculate an authenticity score with explainable reasoning.</div>
+          <div class="risk-meter">
+            <div class="meter-header">
+              <span class="meter-label">Authenticity Score</span>
+              <span class="meter-score" id="meterScore">0%</span>
+            </div>
+            <div class="meter-bar-bg">
+              <div class="meter-bar-fill" id="meterFill"></div>
+            </div>
+            <div class="meter-tags">
+              <span class="meter-tag tag-green"> Verified Purchase</span>
+              <span class="meter-tag tag-red"> Repetitive Language</span>
+              <span class="meter-tag tag-yellow"> Short Review</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Product Comparison -->
+        <div class="feat-card reveal">
+          <div class="card-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="card-title">Product Comparison</div>
+          <div class="card-desc">Compare products across platforms by authenticity score and pricing insights to make the most informed purchase decision.</div>
+          <div class="compare-visual">
+            <div class="compare-row">
+              <span class="compare-product">Product A</span>
+              <div class="compare-bar-wrap"><div class="compare-bar bar-blue" id="cbar1"></div></div>
+              <span class="compare-pct" id="cpct1">0%</span>
+            </div>
+            <div class="compare-row">
+              <span class="compare-product">Product B</span>
+              <div class="compare-bar-wrap"><div class="compare-bar bar-green" id="cbar2"></div></div>
+              <span class="compare-pct" id="cpct2">0%</span>
+            </div>
+            <div class="compare-row">
+              <span class="compare-product">Product C</span>
+              <div class="compare-bar-wrap"><div class="compare-bar bar-amber" id="cbar3"></div></div>
+              <span class="compare-pct" id="cpct3">0%</span>
+            </div>
+            <div class="compare-badge-row">
+              <div class="c-badge"><span class="c-b-val">$49</span>Best Price</div>
+              <div class="c-badge"><span class="c-b-val">92%</span>Top Score</div>
+              <div class="c-badge"><span class="c-b-val">3</span>Platforms</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: AI Chatbot -->
+        <div class="feat-card reveal">
+          <div class="card-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="card-title">Personalized AI Chatbot</div>
+          <div class="card-desc">Ask intelligent questions about review analysis and receive detailed AI-powered explanations tailored to your query.</div>
+          <div class="chat-visual" id="chatVisual">
+            <div class="chat-bubble chat-user">Is this product's reviews authentic?</div>
+            <div class="chat-bubble chat-ai">Analyzing 847 reviews I detected 23% suspicious patterns including repetitive phrasing and bot-like behavior.</div>
+            <div class="typing-dots" id="typingDots">
+              <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="footer">
+       2025 Scamsniffer - AI-Powered Review Intelligence 
+      <a href="scamsniffer-login.html">Sign In</a> 
+      <a href="scamsniffer-register.html">Register</a>
+    </footer>
+  </main>
+
+  <script>
+    /*  Theme  */
+    const moonSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
+    const sunSVG  = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+
+    let isDark = localStorage.getItem('scamsniffer-theme') !== 'light';
+    applyTheme();
+
+    function applyTheme() {
+      document.body.classList.toggle('light', !isDark);
+      document.getElementById('themeIcon').innerHTML = isDark ? moonSVG : sunSVG;
+      document.getElementById('themeLabel').textContent = isDark ? 'Dark' : 'Light';
+    }
+    function toggleTheme() {
+      isDark = !isDark;
+      localStorage.setItem('scamsniffer-theme', isDark ? 'dark' : 'light');
+      applyTheme();
+    }
+
+    /*  Hamburger / Side Menu  */
+    let menuOpen = false;
+    function toggleMenu() { menuOpen ? closeMenu() : openMenu(); }
+    function openMenu() {
+      menuOpen = true;
+      document.getElementById('sideMenu').classList.add('open');
+      document.getElementById('overlay').classList.add('show');
+      document.getElementById('hamburger').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      menuOpen = false;
+      document.getElementById('sideMenu').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+      document.getElementById('hamburger').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+    /*  Scroll Reveal  */
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    /*  Animate Cards on Reveal  */
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateMeter();
+          animateBars();
+          cardObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    cardObserver.observe(document.querySelector('.cards-grid'));
+
+    function animateMeter() {
+      const target = 87;
+      const fill = document.getElementById('meterFill');
+      const score = document.getElementById('meterScore');
+      let cur = 0;
+      const step = () => {
+        cur = Math.min(cur + 1.2, target);
+        fill.style.width = cur + '%';
+        score.textContent = Math.round(cur) + '%';
+        if (cur < target) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    function animateBars() {
+      const bars = [
+        { bar: 'cbar1', pct: 'cpct1', val: 92 },
+        { bar: 'cbar2', pct: 'cpct2', val: 78 },
+        { bar: 'cbar3', pct: 'cpct3', val: 55 },
+      ];
+      bars.forEach(({ bar, pct, val }) => {
+        setTimeout(() => {
+          document.getElementById(bar).style.width = val + '%';
+          let cur = 0;
+          const go = () => {
+            cur = Math.min(cur + 1.5, val);
+            document.getElementById(pct).textContent = Math.round(cur) + '%';
+            if (cur < val) requestAnimationFrame(go);
+          };
+          requestAnimationFrame(go);
+        }, 200);
+      });
+    }
+
+    /*  Chat Typing Loop  */
+    const chatMessages = [
+      { type: 'user', text: 'Is this product\'s reviews authentic?' },
+      { type: 'ai',   text: 'Analyzing 847 reviews I detected 23% suspicious patterns.' },
+      { type: 'user', text: 'Which reviews are fake?' },
+      { type: 'ai',   text: 'Reviews from accounts under 30 days old show repetitive language patterns.' },
+    ];
+    let chatIdx = 0;
+    function runChat() {
+      const visual = document.getElementById('chatVisual');
+      const typing = document.getElementById('typingDots');
+      if (!visual) return;
+      visual.innerHTML = '';
+      visual.appendChild(typing);
+      chatIdx = 0;
+      function nextMsg() {
+        if (chatIdx >= chatMessages.length) { setTimeout(runChat, 2000); return; }
+        const msg = chatMessages[chatIdx++];
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble chat-${msg.type}`;
+        bubble.textContent = msg.text;
+        visual.insertBefore(bubble, typing);
+        if (visual.children.length > 4) visual.removeChild(visual.firstChild);
+        setTimeout(nextMsg, 2200);
+      }
+      setTimeout(nextMsg, 900);
+    }
+    setTimeout(runChat, 1200);
+  </script>
+</body>
+</html>
+
+
+
+

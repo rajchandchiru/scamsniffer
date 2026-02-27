@@ -1,0 +1,446 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scamsniffer - Comparison Results</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #04060f;
+      --text: #e8edf8;
+      --sub: #94a3b8;
+      --card: rgba(10, 16, 36, 0.82);
+      --border: rgba(59, 130, 246, 0.14);
+      --accent: #60a5fa;
+      --accent-bg: rgba(59, 130, 246, 0.12);
+      --ok: #22c55e;
+      --warn: #fbbf24;
+      --bad: #f87171;
+    }
+
+    body.light {
+      --bg: #f0f5ff;
+      --text: #0f172a;
+      --sub: #64748b;
+      --card: rgba(255, 255, 255, 0.92);
+      --border: rgba(37, 99, 235, 0.16);
+      --accent: #2563eb;
+      --accent-bg: rgba(37, 99, 235, 0.1);
+      --ok: #16a34a;
+      --warn: #d97706;
+      --bad: #dc2626;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap { max-width: 1180px; margin: 0 auto; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .title {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      margin: 0;
+    }
+    .title span { color: var(--accent); }
+    .links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .links a, .theme-btn {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .url-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--sub);
+      background: var(--accent-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      margin-bottom: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 940px) {
+      .grid { grid-template-columns: 1.1fr 1fr; }
+    }
+    .card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      backdrop-filter: blur(14px);
+    }
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      color: var(--sub);
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .stat {
+      border: 1px solid var(--border);
+      background: var(--accent-bg);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .stat .k { font-size: 12px; color: var(--sub); }
+    .stat .v { font-size: 22px; font-weight: 800; margin-top: 4px; }
+    .product {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .product img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .product h4 { margin: 0 0 8px; font-size: 18px; }
+    .product .meta { color: var(--sub); font-size: 13px; margin-bottom: 4px; }
+    .table-wrap { overflow: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 640px; }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      padding: 10px 8px;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    th { color: var(--sub); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    td a { color: var(--accent); text-decoration: none; }
+    .chip {
+      display: inline-block;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      font-size: 11px;
+      margin-right: 6px;
+      margin-top: 6px;
+      color: var(--sub);
+    }
+    .chip.good { color: var(--ok); border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.08); }
+    .chip.warn { color: var(--warn); border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.08); }
+    .chip.bad  { color: var(--bad); border-color: rgba(248, 113, 113, 0.3); background: rgba(248, 113, 113, 0.08); }
+    .list { margin: 0; padding: 0; list-style: none; }
+    .list li {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .list a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .list a:hover {
+      text-decoration: underline;
+    }
+    .error {
+      margin-top: 12px;
+      color: var(--bad);
+      font-size: 13px;
+      display: none;
+    }
+    .empty {
+      color: var(--sub);
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <h1 class="title">Price <span>Comparison Results</span></h1>
+      <div class="links">
+        <button class="theme-btn" id="themeBtn" type="button">Theme</button>
+        <a href="comparison-input.html">New Comparison</a>
+        <a href="analyzer.html">Review Analyzer</a>
+        <a href="profile.html">Profile</a>
+      </div>
+    </div>
+
+    <div class="url-pill" id="urlPill">No URL provided</div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Comparison Stats</h3>
+        <div class="stats">
+          <div class="stat"><div class="k">Offers Found</div><div class="v" id="offersFound">0</div></div>
+          <div class="stat"><div class="k">Available Prices</div><div class="v" id="totalPrices">0</div></div>
+          <div class="stat"><div class="k">Price Spread</div><div class="v" id="priceSpread">-</div></div>
+          <div class="stat"><div class="k">Lookalikes</div><div class="v" id="lookalikeCount">0</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Product</h3>
+        <div class="product">
+          <img id="productImage" alt="Product image" style="display:none;" />
+          <div>
+            <h4 id="productTitle">Product</h4>
+            <div class="meta" id="productPlatform">Platform</div>
+            <div class="meta" id="productPrice">-</div>
+            <div class="meta"><a id="productLink" href="#" target="_blank" rel="noopener">Open source product</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h3>Offers</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Store</th>
+              <th>Price</th>
+              <th>Shipping</th>
+              <th>Relative</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody id="offersBody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="offersEmpty">No offers available.</div>
+    </div>
+
+    <div class="grid" style="margin-top:14px;">
+      <div class="card">
+        <h3>Lookalike Products</h3>
+        <ul class="list" id="lookalikeProducts"></ul>
+        <div class="empty" id="lookalikeProductsEmpty">No lookalike products available.</div>
+      </div>
+      <div class="card">
+        <h3>Untrusted / Alternate Offers</h3>
+        <ul class="list" id="lookalikeOffers"></ul>
+        <div class="empty" id="lookalikeOffersEmpty">No untrusted offers available.</div>
+      </div>
+    </div>
+
+    <div class="error" id="errorBox"></div>
+  </div>
+
+  <script>
+    let isDark = localStorage.getItem('scamsniffer-theme') !== 'light';
+    applyTheme();
+
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      isDark = !isDark;
+      localStorage.setItem('scamsniffer-theme', isDark ? 'dark' : 'light');
+      applyTheme();
+    });
+
+    function applyTheme() {
+      document.body.classList.toggle('light', !isDark);
+      document.getElementById('themeBtn').textContent = isDark ? 'Dark' : 'Light';
+    }
+
+    function formatPrice(offer, currency) {
+      if (offer.price_text) return offer.price_text;
+      if (offer.price !== undefined && offer.price !== null) return String(offer.price);
+      if (offer.price_value !== undefined && offer.price_value !== null) {
+        const symbol = currency || '';
+        return symbol + String(offer.price_value);
+      }
+      return '-';
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value ?? '-';
+    }
+
+    function pickItemLink(item) {
+      if (!item || typeof item !== 'object') return '';
+      return (
+        item.product_url ||
+        item.productUrl ||
+        item.link ||
+        item.url ||
+        item.externalUri ||
+        ''
+      );
+    }
+
+    function render(payload) {
+      const summary = payload.summary || {};
+      const product = payload.product || {};
+      const compareData = payload.compare_data || {};
+      const currency = compareData.currency_symbol || summary.currency_symbol || '';
+      const offers = Array.isArray(compareData.offers) ? compareData.offers : [];
+      const lookalikeProducts = Array.isArray(compareData.lookalike_products) ? compareData.lookalike_products : [];
+      const lookalikeOffers = Array.isArray(compareData.lookalike_offers) ? compareData.lookalike_offers : [];
+      const srcUrl = payload.url || compareData.input_url || '';
+
+      if (srcUrl) {
+        document.getElementById('urlPill').textContent = srcUrl;
+      }
+
+      setText('offersFound', summary.offers_found ?? compareData.offers_found ?? offers.length);
+      setText('totalPrices', summary.total_available_prices ?? compareData.total_available_prices ?? offers.length);
+      setText('lookalikeCount', summary.lookalike_products_count ?? lookalikeProducts.length);
+      if (summary.price_spread !== undefined && summary.price_spread !== null) {
+        setText('priceSpread', currency + summary.price_spread);
+      } else {
+        setText('priceSpread', '-');
+      }
+
+      setText('productTitle', product.title || 'Unknown product');
+      setText('productPlatform', product.platform || 'Unknown platform');
+      setText('productPrice', product.price || '-');
+      const productLink = document.getElementById('productLink');
+      productLink.href = product.link || srcUrl || '#';
+      if (!productLink.href || productLink.href.endsWith('#')) {
+        productLink.removeAttribute('href');
+      }
+
+      if (product.image) {
+        const img = document.getElementById('productImage');
+        img.src = product.image;
+        img.style.display = 'block';
+      }
+
+      const offersBody = document.getElementById('offersBody');
+      offersBody.innerHTML = '';
+      offers.forEach(function (offer) {
+        const tr = document.createElement('tr');
+        const store = offer.store_name || offer.site_name || offer.name || '-';
+        const shipping = offer.shipping_text || offer.shipping || '-';
+        const rel = offer.relative_text || offer.relative || '-';
+        const link = offer.link || offer.product_link || offer.url || '#';
+        tr.innerHTML = `
+          <td>${store}</td>
+          <td>${formatPrice(offer, currency)}</td>
+          <td>${shipping}</td>
+          <td>${rel}</td>
+          <td><a href="${link}" target="_blank" rel="noopener">Open</a></td>
+        `;
+        offersBody.appendChild(tr);
+      });
+      document.getElementById('offersEmpty').style.display = offers.length ? 'none' : 'block';
+
+      const lookalikeProductsList = document.getElementById('lookalikeProducts');
+      lookalikeProductsList.innerHTML = '';
+      lookalikeProducts.forEach(function (item) {
+        const li = document.createElement('li');
+        const name = item.name || item.title || 'Unknown';
+        const price = item.price_text || (item.price_value !== undefined ? (currency + item.price_value) : '-');
+        const link = pickItemLink(item);
+        const titleNode = link
+          ? `<a href="${link}" target="_blank" rel="noopener"><strong>${name}</strong></a>`
+          : `<strong>${name}</strong>`;
+        const openNode = link
+          ? `<span class="chip good"><a href="${link}" target="_blank" rel="noopener">Open</a></span>`
+          : '';
+        li.innerHTML = `${titleNode}<br/><span class="chip">${price}</span>${openNode}`;
+        lookalikeProductsList.appendChild(li);
+      });
+      document.getElementById('lookalikeProductsEmpty').style.display = lookalikeProducts.length ? 'none' : 'block';
+
+      const lookalikeOffersList = document.getElementById('lookalikeOffers');
+      lookalikeOffersList.innerHTML = '';
+      lookalikeOffers.forEach(function (item) {
+        const li = document.createElement('li');
+        const name = item.store_name || item.site_name || item.name || 'Unknown';
+        const price = item.price_text || (item.price_value !== undefined ? (currency + item.price_value) : '-');
+        const link = pickItemLink(item);
+        const titleNode = link
+          ? `<a href="${link}" target="_blank" rel="noopener"><strong>${name}</strong></a>`
+          : `<strong>${name}</strong>`;
+        const openNode = link
+          ? `<span class="chip warn"><a href="${link}" target="_blank" rel="noopener">Open</a></span>`
+          : '';
+        li.innerHTML = `${titleNode}<br/><span class="chip bad">${price}</span>${openNode}`;
+        lookalikeOffersList.appendChild(li);
+      });
+      document.getElementById('lookalikeOffersEmpty').style.display = lookalikeOffers.length ? 'none' : 'block';
+    }
+
+    async function loadData() {
+      const params = new URLSearchParams(window.location.search);
+      const analysisId = params.get('analysis_id') || '';
+      const urlFromQuery = params.get('url') || '';
+      const fallback = localStorage.getItem('scamsniffer-last-compare');
+
+      if (urlFromQuery) {
+        document.getElementById('urlPill').textContent = urlFromQuery;
+      }
+
+      if (analysisId) {
+        try {
+          const res = await fetch('/api/compare/' + encodeURIComponent(analysisId));
+          const payload = await res.json();
+          if (!res.ok || !payload.ok) {
+            throw new Error(payload.error || 'Could not load comparison data');
+          }
+          localStorage.setItem('scamsniffer-last-compare', JSON.stringify(payload));
+          render(payload);
+          return;
+        } catch (err) {
+          document.getElementById('errorBox').style.display = 'block';
+          document.getElementById('errorBox').textContent = err.message || 'Failed to load comparison result.';
+        }
+      }
+
+      if (fallback) {
+        try {
+          render(JSON.parse(fallback));
+          return;
+        } catch (_) {}
+      }
+
+      document.getElementById('errorBox').style.display = 'block';
+      document.getElementById('errorBox').textContent = 'No comparison data found.';
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,1187 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scamsniffer - Analysis Results</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { min-height: 100vh; overflow-x: hidden; }
+
+    :root {
+      --bg:            #04060f;
+      --bg2:           #070b18;
+      --nav-bg:        rgba(4,6,15,0.92);
+      --card-bg:       rgba(10,16,36,0.72);
+      --card-bg-solid: #0a1224;
+      --card-border:   rgba(59,130,246,0.14);
+      --card-hover:    rgba(59,130,246,0.26);
+      --text:          #e8edf8;
+      --text-sub:      #64748b;
+      --text-faint:    #1e3a5f;
+      --accent:        #3b82f6;
+      --accent2:       #60a5fa;
+      --accent-glow:   rgba(59,130,246,0.15);
+      --grid:          rgba(59,130,246,0.04);
+      --divider:       rgba(59,130,246,0.1);
+      --menu-bg:       #07091a;
+      --menu-border:   rgba(59,130,246,0.14);
+      --toggle-bg:     rgba(255,255,255,0.06);
+      --toggle-border: rgba(255,255,255,0.1);
+      --toggle-color:  #94a3b8;
+      --pill:          rgba(59,130,246,0.25);
+      --knob:          #60a5fa;
+      --knob-x:        3px;
+      --orb1:          rgba(59,130,246,0.1);
+      --orb2:          rgba(99,102,241,0.07);
+      --hero-grad:     linear-gradient(135deg,#60a5fa 0%,#3b82f6 40%,#818cf8 100%);
+      --badge-bg:      rgba(59,130,246,0.09);
+      --badge-border:  rgba(59,130,246,0.2);
+      --badge-color:   #60a5fa;
+      --input-bg:      rgba(255,255,255,0.04);
+      --input-border:  rgba(255,255,255,0.08);
+      --green:         #22c55e;
+      --green-bg:      rgba(34,197,94,0.08);
+      --green-border:  rgba(34,197,94,0.2);
+      --red:           #f87171;
+      --red-bg:        rgba(248,113,113,0.08);
+      --red-border:    rgba(248,113,113,0.2);
+      --amber:         #fbbf24;
+      --amber-bg:      rgba(251,191,36,0.08);
+      --amber-border:  rgba(251,191,36,0.2);
+      --footer-border: rgba(255,255,255,0.05);
+      --sec-border:    rgba(255,255,255,0.1);
+      --chat-user-bg:  linear-gradient(135deg,#2563eb,#1d4ed8);
+      --chat-ai-bg:    rgba(59,130,246,0.09);
+      --chat-ai-border:rgba(59,130,246,0.18);
+      --shadow-lg:     0 24px 60px rgba(0,0,0,0.5);
+    }
+    body.light {
+      --bg:            #f0f5ff;
+      --bg2:           #e8efff;
+      --nav-bg:        rgba(240,245,255,0.92);
+      --card-bg:       rgba(255,255,255,0.9);
+      --card-bg-solid: #ffffff;
+      --card-border:   rgba(37,99,235,0.12);
+      --card-hover:    rgba(37,99,235,0.22);
+      --text:          #0f172a;
+      --text-sub:      #64748b;
+      --text-faint:    #cbd5e1;
+      --accent:        #2563eb;
+      --accent2:       #2563eb;
+      --accent-glow:   rgba(37,99,235,0.1);
+      --grid:          rgba(37,99,235,0.05);
+      --divider:       rgba(37,99,235,0.09);
+      --menu-bg:       #ffffff;
+      --menu-border:   rgba(37,99,235,0.12);
+      --toggle-bg:     #ffffff;
+      --toggle-border: rgba(37,99,235,0.18);
+      --toggle-color:  #1e40af;
+      --pill:          #2563eb;
+      --knob:          #ffffff;
+      --knob-x:        19px;
+      --orb1:          rgba(59,130,246,0.09);
+      --orb2:          rgba(99,102,241,0.06);
+      --hero-grad:     linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#4f46e5 100%);
+      --badge-bg:      #eff6ff;
+      --badge-border:  rgba(37,99,235,0.18);
+      --badge-color:   #1d4ed8;
+      --input-bg:      #f8faff;
+      --input-border:  rgba(37,99,235,0.13);
+      --green:         #16a34a;
+      --green-bg:      #f0fdf4;
+      --green-border:  rgba(22,163,74,0.2);
+      --red:           #dc2626;
+      --red-bg:        #fef2f2;
+      --red-border:    rgba(220,38,38,0.2);
+      --amber:         #d97706;
+      --amber-bg:      #fffbeb;
+      --amber-border:  rgba(217,119,6,0.2);
+      --footer-border: rgba(37,99,235,0.08);
+      --sec-border:    rgba(37,99,235,0.14);
+      --chat-user-bg:  linear-gradient(135deg,#2563eb,#1d4ed8);
+      --chat-ai-bg:    #eff6ff;
+      --chat-ai-border:rgba(37,99,235,0.16);
+      --shadow-lg:     0 24px 60px rgba(13,17,35,0.12);
+    }
+
+    body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); transition:background 0.4s,color 0.4s; }
+
+    .bg-fixed { position:fixed; inset:0; pointer-events:none; z-index:0; }
+    .bg-grid {
+      position:absolute; inset:0;
+      background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+      background-size:48px 48px; transition:background-image 0.4s;
+    }
+    .orb { position:absolute; border-radius:50%; transition:background 0.4s; }
+    .orb-1 { width:600px; height:600px; top:-150px; left:-120px; background:radial-gradient(circle,var(--orb1) 0%,transparent 60%); }
+    .orb-2 { width:450px; height:450px; bottom:-80px; right:-80px; background:radial-gradient(circle,var(--orb2) 0%,transparent 60%); }
+
+    .overlay { position:fixed; inset:0; z-index:150; background:rgba(0,0,0,0.55); opacity:0; pointer-events:none; transition:opacity 0.35s; }
+    .overlay.show { opacity:1; pointer-events:all; }
+
+    /* SIDE MENU */
+    .side-menu {
+      position:fixed; top:0; left:0; height:100vh; width:280px; z-index:200;
+      background:var(--menu-bg); border-right:1px solid var(--menu-border);
+      transform:translateX(-100%);
+      transition:transform 0.38s cubic-bezier(0.16,1,0.3,1),background 0.4s,border-color 0.4s;
+      display:flex; flex-direction:column; box-shadow:6px 0 40px rgba(0,0,0,0.5);
+    }
+    .side-menu.open { transform:translateX(0); }
+    .menu-header { display:flex; align-items:center; justify-content:space-between; padding:22px 24px 20px; border-bottom:1px solid var(--menu-border); }
+    .menu-logo { display:flex; align-items:center; gap:10px; }
+    .menu-logo-text { font-size:17px; font-weight:800; letter-spacing:-0.5px; background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .menu-close { width:34px; height:34px; border-radius:8px; border:none; cursor:pointer; background:rgba(255,255,255,0.05); color:var(--text-sub); display:flex; align-items:center; justify-content:center; transition:background 0.2s,color 0.2s; }
+    .menu-close:hover { background:rgba(239,68,68,0.1); color:#f87171; }
+    .menu-nav { flex:1; padding:20px 16px; display:flex; flex-direction:column; gap:6px; }
+    .menu-item { display:flex; align-items:center; gap:14px; padding:13px 16px; border-radius:12px; text-decoration:none; font-size:14px; font-weight:500; color:var(--text-sub); transition:background 0.2s,color 0.2s,transform 0.2s; border:1px solid transparent; }
+    .menu-item:hover,.menu-item.active { background:var(--accent-glow); color:var(--accent2); border-color:var(--card-border); transform:translateX(4px); }
+    .menu-item.active { font-weight:700; }
+    .mi-icon { width:38px; height:38px; border-radius:10px; flex-shrink:0; background:var(--badge-bg); border:1px solid var(--badge-border); display:flex; align-items:center; justify-content:center; color:var(--accent2); }
+    .mi-info { display:flex; flex-direction:column; }
+    .mi-label { font-size:14px; font-weight:600; }
+    .mi-desc { font-size:11px; color:var(--text-sub); margin-top:1px; }
+    .menu-foot { padding:18px 24px; border-top:1px solid var(--menu-border); font-size:11px; color:var(--text-sub); font-family:'JetBrains Mono',monospace; }
+
+    /* NAVBAR */
+    .navbar { position:fixed; top:0; left:0; right:0; z-index:100; height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background:var(--nav-bg); border-bottom:1px solid var(--divider); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); transition:background 0.4s,border-color 0.4s; }
+    .nav-left { display:flex; align-items:center; gap:12px; }
+    .hamburger { width:38px; height:38px; border-radius:9px; border:1px solid var(--toggle-border); background:var(--toggle-bg); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4.5px; transition:background 0.2s; flex-shrink:0; }
+    .hamburger:hover { background:var(--accent-glow); }
+    .hl { width:16px; height:2px; border-radius:2px; background:var(--text-sub); transition:transform 0.3s,opacity 0.3s,width 0.3s; }
+    .hamburger.active .hl:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+    .hamburger.active .hl:nth-child(2) { opacity:0; width:0; }
+    .hamburger.active .hl:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
+    .nav-brand { display:flex; align-items:center; gap:9px; text-decoration:none; }
+    .nav-brand-txt { font-size:18px; font-weight:800; letter-spacing:-0.6px; background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .nav-right { display:flex; align-items:center; gap:10px; }
+    .theme-btn { display:flex; align-items:center; gap:7px; padding:6px 12px; border-radius:50px; cursor:pointer; font-family:'Outfit',sans-serif; font-size:12px; font-weight:500; background:var(--toggle-bg); color:var(--toggle-color); border:1px solid var(--toggle-border); box-shadow:0 2px 8px rgba(0,0,0,0.2); transition:all 0.3s; }
+    .theme-btn:hover { filter:brightness(1.1); }
+    .ti { width:14px; height:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .tp { width:32px; height:18px; border-radius:18px; background:var(--pill); position:relative; transition:background 0.3s; flex-shrink:0; }
+    .tk { width:12px; height:12px; border-radius:50%; background:var(--knob); position:absolute; top:3px; left:var(--knob-x); transition:left 0.3s cubic-bezier(0.34,1.56,0.64,1),background 0.3s; }
+    .tl { display:none; }
+    @media(min-width:480px){ .tl { display:inline; } }
+
+    /* PAGE LAYOUT */
+    .page { position:relative; z-index:1; padding:82px 20px 120px; max-width:1280px; margin:0 auto; }
+
+    .page-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; animation:fadeUp 0.5s 0.05s both; }
+    .page-title { font-size:clamp(20px,3.5vw,28px); font-weight:800; letter-spacing:-0.7px; }
+    .page-title span { background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .page-sub { font-size:12.5px; color:var(--text-sub); margin-top:4px; font-family:'JetBrains Mono',monospace; }
+    .url-pill { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; background:var(--badge-bg); border:1px solid var(--badge-border); border-radius:50px; font-size:11.5px; font-family:'JetBrains Mono',monospace; color:var(--badge-color); max-width:320px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+
+    /* MAIN GRID */
+    .results-grid { display:grid; grid-template-columns:60fr 40fr; gap:20px; align-items:start; }
+    @media(max-width:900px){ .results-grid { grid-template-columns:1fr; } }
+
+    /* CARD BASE */
+    .card {
+      background:var(--card-bg); border:1px solid var(--card-border);
+      border-radius:20px; padding:26px 24px;
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      transition:background 0.4s,border-color 0.4s;
+    }
+    .card-title { font-size:11px; font-family:'JetBrains Mono',monospace; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-sub); margin-bottom:18px; display:flex; align-items:center; gap:8px; }
+    .card-title-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+    /*  LEFT COLUMN  */
+    .left-col { display:flex; flex-direction:column; gap:18px; animation:fadeUp 0.55s 0.1s both; }
+
+    /* TRUST SCORE */
+    .trust-card { }
+    .trust-inner { display:flex; align-items:center; gap:28px; flex-wrap:wrap; }
+    .gauge-wrap { position:relative; width:160px; height:160px; flex-shrink:0; }
+    .gauge-wrap svg { width:100%; height:100%; transform:rotate(-90deg); }
+    .gauge-bg { fill:none; stroke:var(--divider); stroke-width:10; }
+    .gauge-fill { fill:none; stroke-width:10; stroke-linecap:round; stroke-dasharray:408; stroke-dashoffset:408; transition:stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1), stroke 0.4s; }
+    .gauge-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .gauge-score {
+      font-size:38px; font-weight:900; letter-spacing:-2px; line-height:1;
+      background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .gauge-label { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--text-sub); margin-top:4px; letter-spacing:0.08em; text-transform:uppercase; }
+    .trust-meta { flex:1; min-width:180px; }
+    .trust-headline { font-size:clamp(20px,3vw,28px); font-weight:800; letter-spacing:-0.8px; margin-bottom:8px; }
+    .trust-verdict { display:inline-flex; align-items:center; gap:7px; padding:5px 13px; border-radius:50px; font-size:12px; font-family:'JetBrains Mono',monospace; font-weight:600; margin-bottom:14px; border:1px solid; }
+    .trust-desc { font-size:13px; color:var(--text-sub); line-height:1.65; }
+
+    /* BREAKDOWN */
+    .breakdown-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media(max-width:480px){ .breakdown-grid { grid-template-columns:1fr; } }
+
+    .breakdown-card {
+      border-radius:14px; padding:18px 16px;
+      border:1px solid;
+      transition:background 0.4s,border-color 0.4s;
+    }
+    .breakdown-card.positive { background:var(--green-bg); border-color:var(--green-border); }
+    .breakdown-card.negative { background:var(--red-bg); border-color:var(--red-border); }
+    .breakdown-icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .breakdown-card.positive .breakdown-icon { background:rgba(34,197,94,0.12); }
+    .breakdown-card.negative .breakdown-icon { background:rgba(248,113,113,0.12); }
+    .breakdown-pct { font-size:40px; font-weight:900; letter-spacing:-2px; line-height:1; margin-bottom:4px; }
+    .breakdown-card.positive .breakdown-pct { color:var(--green); }
+    .breakdown-card.negative .breakdown-pct { color:var(--red); }
+    .breakdown-label { font-size:12px; font-weight:700; letter-spacing:-0.2px; }
+    .breakdown-card.positive .breakdown-label { color:var(--green); }
+    .breakdown-card.negative .breakdown-label { color:var(--red); }
+    .breakdown-sublabel { font-size:11px; color:var(--text-sub); margin-top:3px; font-family:'JetBrains Mono',monospace; }
+    .breakdown-bar-bg { height:4px; border-radius:4px; background:rgba(255,255,255,0.07); margin-top:14px; overflow:hidden; }
+    body.light .breakdown-bar-bg { background:rgba(0,0,0,0.07); }
+    .breakdown-bar-fill { height:100%; border-radius:4px; width:0%; transition:width 1.4s cubic-bezier(0.16,1,0.3,1); }
+    .breakdown-card.positive .breakdown-bar-fill { background:linear-gradient(90deg,#22c55e,#4ade80); box-shadow:0 0 8px rgba(34,197,94,0.4); }
+    .breakdown-card.negative .breakdown-bar-fill { background:linear-gradient(90deg,#f87171,#fca5a5); box-shadow:0 0 8px rgba(248,113,113,0.4); }
+
+    /* CONCLUSION */
+    .conclusion-body { font-size:14px; line-height:1.75; color:var(--text-sub); min-height:80px; }
+    .conclusion-tags { display:flex; gap:7px; flex-wrap:wrap; margin-top:16px; }
+    .ctag { padding:4px 11px; border-radius:8px; font-size:11px; font-family:'JetBrains Mono',monospace; font-weight:600; border:1px solid; transition:background 0.4s; }
+    .review-samples { display:flex; flex-direction:column; gap:10px; }
+    .review-item {
+      border: 1px solid var(--sec-border);
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: var(--badge-bg);
+    }
+    .review-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-sub);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .review-text {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    /*  RIGHT COLUMN  */
+    .right-col { display:flex; flex-direction:column; gap:18px; animation:fadeUp 0.55s 0.2s both; }
+
+    /* PRODUCT CARD */
+    .product-img-wrap {
+      width:100%; aspect-ratio:16/9; border-radius:14px; overflow:hidden;
+      background:var(--badge-bg); border:1px solid var(--card-border);
+      display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+      position:relative;
+    }
+    .product-img-placeholder { display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--text-faint); }
+    .product-img-placeholder svg { opacity:0.4; }
+    .product-img-placeholder span { font-size:11px; font-family:'JetBrains Mono',monospace; opacity:0.4; letter-spacing:0.06em; }
+    #productImage { width:100%; height:100%; object-fit:cover; display:none; }
+
+    .product-platform { display:inline-flex; align-items:center; gap:6px; padding:3px 10px; background:var(--badge-bg); border:1px solid var(--badge-border); border-radius:6px; font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--badge-color); margin-bottom:10px; }
+    .product-title-el { font-size:clamp(16px,2.5vw,20px); font-weight:800; letter-spacing:-0.5px; margin-bottom:8px; line-height:1.25; }
+    .product-price-el { font-size:26px; font-weight:900; letter-spacing:-1px; background:var(--hero-grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:12px; }
+    .product-desc-el { font-size:13px; color:var(--text-sub); line-height:1.65; }
+
+    .product-link-row { margin-top:16px; padding-top:16px; border-top:1px solid var(--divider); display:flex; align-items:center; gap:8px; }
+    .product-link-label { font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--text-sub); flex-shrink:0; }
+    .product-link-val { font-size:11.5px; font-family:'JetBrains Mono',monospace; color:var(--accent2); word-break:break-all; line-height:1.4; }
+
+    /* SIGNAL CARD */
+    .signal-row { display:flex; flex-direction:column; gap:10px; }
+    .signal-item { display:flex; align-items:center; gap:12px; }
+    .signal-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .signal-name { flex:1; font-size:13px; font-weight:500; }
+    .signal-bar-wrap { width:100px; height:5px; border-radius:5px; background:rgba(255,255,255,0.06); overflow:hidden; flex-shrink:0; }
+    body.light .signal-bar-wrap { background:rgba(0,0,0,0.07); }
+    .signal-bar { height:100%; border-radius:5px; width:0%; transition:width 1.4s cubic-bezier(0.16,1,0.3,1); }
+    .signal-val { font-size:11.5px; font-family:'JetBrains Mono',monospace; color:var(--text-sub); width:36px; text-align:right; flex-shrink:0; }
+
+    /* DIVIDER */
+    .hr { height:1px; background:var(--divider); margin:4px 0; }
+
+    /* BOTTOM COMPARE BUTTON */
+    .compare-btn {
+      position:fixed; bottom:28px; left:28px; z-index:90;
+      display:flex; align-items:center; gap:9px;
+      padding:12px 20px; border-radius:14px; border:none; cursor:pointer;
+      font-family:'Outfit',sans-serif; font-size:14px; font-weight:700;
+      background:var(--card-bg); border:1.5px solid var(--card-border);
+      color:var(--text); backdrop-filter:blur(12px);
+      box-shadow:var(--shadow-lg);
+      transition:background 0.2s,border-color 0.2s,transform 0.2s,color 0.2s;
+      text-decoration:none;
+    }
+    .compare-btn:hover { background:var(--accent-glow); border-color:var(--accent); color:var(--accent2); transform:translateY(-2px); }
+
+    /* CHATBOT FAB */
+    .chat-fab {
+      position:fixed; bottom:28px; right:28px; z-index:90;
+      width:56px; height:56px; border-radius:50%; border:none; cursor:pointer;
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      box-shadow:0 8px 28px rgba(37,99,235,0.5);
+      display:flex; align-items:center; justify-content:center;
+      transition:transform 0.25s,box-shadow 0.25s;
+    }
+    .chat-fab:hover { transform:scale(1.1) translateY(-2px); box-shadow:0 12px 36px rgba(37,99,235,0.65); }
+    .chat-fab-badge { position:absolute; top:2px; right:2px; width:14px; height:14px; border-radius:50%; background:#22c55e; border:2px solid var(--bg); animation:pulse 2s infinite; }
+
+    /* CHATBOT MODAL */
+    .chat-modal-overlay {
+      position:fixed; inset:0; z-index:400;
+      background:rgba(0,0,0,0.5); opacity:0; pointer-events:none;
+      transition:opacity 0.3s; backdrop-filter:blur(4px);
+    }
+    .chat-modal-overlay.open { opacity:1; pointer-events:all; }
+    .chat-modal {
+      position:fixed; bottom:100px; right:28px; z-index:500;
+      width:min(380px, calc(100vw - 32px));
+      height:520px;
+      background:var(--card-bg); border:1px solid var(--card-border);
+      border-radius:22px; backdrop-filter:blur(20px);
+      box-shadow:var(--shadow-lg), 0 0 0 1px rgba(59,130,246,0.06);
+      display:flex; flex-direction:column;
+      transform:translateY(20px) scale(0.96); opacity:0; pointer-events:none;
+      transition:transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
+    }
+    .chat-modal.open { transform:translateY(0) scale(1); opacity:1; pointer-events:all; }
+
+    .chat-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 20px; border-bottom:1px solid var(--divider); flex-shrink:0;
+    }
+    .chat-header-left { display:flex; align-items:center; gap:10px; }
+    .chat-avatar { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#2563eb,#818cf8); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .chat-name { font-size:14px; font-weight:700; letter-spacing:-0.3px; }
+    .chat-status { font-size:10.5px; color:var(--green); font-family:'JetBrains Mono',monospace; margin-top:1px; }
+    .chat-close { width:30px; height:30px; border-radius:8px; border:1px solid var(--toggle-border); background:var(--toggle-bg); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-sub); transition:background 0.2s,color 0.2s; }
+    .chat-close:hover { background:rgba(239,68,68,0.1); color:#f87171; border-color:rgba(239,68,68,0.2); }
+
+    .chat-messages { flex:1; overflow-y:auto; padding:16px 16px 8px; display:flex; flex-direction:column; gap:10px; scroll-behavior:smooth; }
+    .chat-messages::-webkit-scrollbar { width:4px; }
+    .chat-messages::-webkit-scrollbar-track { background:transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background:var(--divider); border-radius:4px; }
+
+    .chat-bubble { max-width:84%; padding:10px 13px; border-radius:14px; font-size:13px; line-height:1.55; }
+    .chat-bubble.ai { background:var(--chat-ai-bg); border:1px solid var(--chat-ai-border); color:var(--text); align-self:flex-start; border-radius:4px 14px 14px 14px; }
+    .chat-bubble.user { background:var(--chat-user-bg); color:#fff; align-self:flex-end; border-radius:14px 14px 4px 14px; }
+    .chat-bubble.ai .bubble-label { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--accent2); margin-bottom:4px; letter-spacing:0.04em; }
+
+    .chat-typing { display:flex; gap:4px; align-items:center; padding:10px 14px; background:var(--chat-ai-bg); border:1px solid var(--chat-ai-border); border-radius:4px 14px 14px 14px; align-self:flex-start; }
+    .chat-typing .dot { width:7px; height:7px; border-radius:50%; background:var(--accent2); animation:typingBounce 1.2s infinite; }
+    .chat-typing .dot:nth-child(2) { animation-delay:0.2s; }
+    .chat-typing .dot:nth-child(3) { animation-delay:0.4s; }
+    @keyframes typingBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+    .chat-input-row { display:flex; gap:8px; padding:12px 14px; border-top:1px solid var(--divider); flex-shrink:0; }
+    .chat-input {
+      flex:1; background:var(--input-bg); border:1px solid var(--input-border);
+      border-radius:10px; padding:10px 13px;
+      font-family:'Outfit',sans-serif; font-size:13px; color:var(--text);
+      outline:none; transition:border-color 0.2s,box-shadow 0.2s;
+      resize:none; max-height:80px;
+    }
+    .chat-input::placeholder { color:var(--text-sub); opacity:0.6; }
+    .chat-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+    .chat-send { width:38px; height:38px; border-radius:10px; border:none; cursor:pointer; background:linear-gradient(135deg,#2563eb,#1d4ed8); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform 0.2s,box-shadow 0.2s; align-self:flex-end; }
+    .chat-send:hover { transform:scale(1.08); box-shadow:0 4px 14px rgba(37,99,235,0.45); }
+
+    @media(max-width:540px){
+      .compare-btn { bottom:16px; left:16px; padding:10px 14px; font-size:13px; }
+      .chat-fab { bottom:16px; right:16px; }
+      .chat-modal { bottom:84px; right:8px; width:calc(100vw - 16px); height:460px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-fixed">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<!-- SIDE MENU -->
+<nav class="side-menu" id="sideMenu">
+  <div class="menu-header">
+    <div class="menu-logo">
+      <img src="logo1.png" alt="Scamsniffer" style="width:32px;height:32px;object-fit:contain;"/>
+      <span class="menu-logo-text">Scamsniffer</span>
+    </div>
+    <button class="menu-close" onclick="closeMenu()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="menu-nav">
+    <a href="profile.html" class="menu-item" onclick="closeMenu()">
+      <div class="mi-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="mi-info"><span class="mi-label">Profile</span><span class="mi-desc">Manage your account</span></div>
+    </a>
+    <a href="analyzer.html" class="menu-item" onclick="closeMenu()">
+      <div class="mi-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div class="mi-info"><span class="mi-label">Fake Review</span><span class="mi-desc">Analyze review authenticity</span></div>
+    </a>
+    <a href="comparison-input.html" class="menu-item" onclick="closeMenu()">
+      <div class="mi-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <div class="mi-info"><span class="mi-label">Product Comparison</span><span class="mi-desc">Compare across platforms</span></div>
+    </a>
+  </div>
+  <div class="menu-foot">v1.0.0 - AI-Powered - Secure</div>
+</nav>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-left">
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <div class="hl"></div><div class="hl"></div><div class="hl"></div>
+    </button>
+    <a href="index.html" class="nav-brand">
+      <img src="logo1.png" alt="Scamsniffer" style="width:34px;height:34px;object-fit:contain;"/>
+      <span class="nav-brand-txt">Scamsniffer</span>
+    </a>
+  </div>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
+      <span class="ti" id="themeIcon"></span>
+      <span class="tl" id="themeLabel"></span>
+      <div class="tp"><div class="tk"></div></div>
+    </button>
+  </div>
+</header>
+
+<!-- PAGE -->
+<main class="page">
+
+  <div class="page-head">
+    <div>
+      <div class="page-title">Analysis <span>Results</span></div>
+      <div class="page-sub">AI-powered review authenticity report</div>
+    </div>
+    <div class="url-pill" id="urlPill">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span id="urlPillText">No URL provided</span>
+    </div>
+  </div>
+
+  <div class="results-grid">
+
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+
+      <!-- 1. TRUST SCORE -->
+      <div class="card trust-card">
+        <div class="card-title"><span class="card-title-dot"></span>Overall Trust Score</div>
+        <div class="trust-inner">
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 140 140">
+              <circle class="gauge-bg" cx="70" cy="70" r="65"/>
+              <circle class="gauge-fill" id="gaugeFill" cx="70" cy="70" r="65"/>
+            </svg>
+            <div class="gauge-center">
+              <div class="gauge-score" id="trustScoreDisplay"></div>
+              <div class="gauge-label">Trust Score</div>
+            </div>
+          </div>
+          <div class="trust-meta">
+            <div class="trust-headline" id="trustHeadline">Awaiting Analysis</div>
+            <div class="trust-verdict" id="trustVerdict" style="display:none;"></div>
+            <div class="trust-desc" id="trustDescription">The trust score will be populated once the backend analysis is complete. This gauge reflects the overall authenticity confidence level.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. AUTHENTICITY BREAKDOWN -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span>Review Authenticity Breakdown</div>
+        <div class="breakdown-grid">
+
+          <div class="breakdown-card positive" id="positiveCard">
+            <div class="breakdown-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="breakdown-pct" id="realReviewsPct">%</div>
+            <div class="breakdown-label">Real Reviews</div>
+            <div class="breakdown-sublabel" id="realReviewsCount">Pending backend data</div>
+            <div class="breakdown-bar-bg">
+              <div class="breakdown-bar-fill" id="realReviewsBar"></div>
+            </div>
+          </div>
+
+          <div class="breakdown-card negative" id="negativeCard">
+            <div class="breakdown-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <div class="breakdown-pct" id="fakeReviewsPct">%</div>
+            <div class="breakdown-label">Fake Reviews</div>
+            <div class="breakdown-sublabel" id="fakeReviewsCount">Pending backend data</div>
+            <div class="breakdown-bar-bg">
+              <div class="breakdown-bar-fill" id="fakeReviewsBar"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="margin-top:16px;">
+          <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-sub);margin-bottom:10px;letter-spacing:0.06em;text-transform:uppercase;">Review Signals</div>
+          <div class="signal-row" id="signalRow">
+            <div class="signal-item">
+              <div class="signal-dot" style="background:var(--accent2);"></div>
+              <div class="signal-name" id="sig1Name">Verified Purchases</div>
+              <div class="signal-bar-wrap"><div class="signal-bar" id="sig1Bar" style="background:linear-gradient(90deg,#60a5fa,#818cf8);"></div></div>
+              <div class="signal-val" id="sig1Val"></div>
+            </div>
+            <div class="signal-item">
+              <div class="signal-dot" style="background:var(--green);"></div>
+              <div class="signal-name" id="sig2Name">Detailed Reviews</div>
+              <div class="signal-bar-wrap"><div class="signal-bar" id="sig2Bar" style="background:linear-gradient(90deg,#22c55e,#4ade80);"></div></div>
+              <div class="signal-val" id="sig2Val"></div>
+            </div>
+            <div class="signal-item">
+              <div class="signal-dot" style="background:var(--amber);"></div>
+              <div class="signal-name" id="sig3Name">One-Line Reviews</div>
+              <div class="signal-bar-wrap"><div class="signal-bar" id="sig3Bar" style="background:linear-gradient(90deg,#fbbf24,#fde68a);"></div></div>
+              <div class="signal-val" id="sig3Val"></div>
+            </div>
+            <div class="signal-item">
+              <div class="signal-dot" style="background:var(--red);"></div>
+              <div class="signal-name" id="sig4Name">Repetitive Language</div>
+              <div class="signal-bar-wrap"><div class="signal-bar" id="sig4Bar" style="background:linear-gradient(90deg,#f87171,#fca5a5);"></div></div>
+              <div class="signal-val" id="sig4Val"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. ANALYSIS CONCLUSION -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span>Analysis Conclusion</div>
+        <div class="conclusion-body" id="conclusionText">
+          Analysis summary will appear here once the backend processes this product's reviews. The conclusion will include a natural language explanation of detected patterns, risk indicators, and a final recommendation.
+        </div>
+        <div class="conclusion-tags" id="conclusionTags">
+          <span class="ctag" style="background:var(--badge-bg);border-color:var(--badge-border);color:var(--badge-color);" id="tag1">Awaiting Data</span>
+        </div>
+      </div>
+
+      <!-- 4. REVIEW SAMPLES -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span>Recent Review Samples</div>
+        <div class="review-samples" id="reviewSamples">
+          <div class="review-item">
+            <div class="review-meta"><span>Awaiting Data</span><span>--</span></div>
+            <div class="review-text">Sample review snippets will appear here after analysis.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- PRODUCT OVERVIEW -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span>Product Overview</div>
+
+        <div class="product-img-wrap">
+          <img id="productImage" src="" alt="Product Image"/>
+          <div class="product-img-placeholder" id="imgPlaceholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Product image unavailable</span>
+          </div>
+        </div>
+
+        <div class="product-platform" id="productPlatform">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Platform  Pending
+        </div>
+
+        <div class="product-title-el" id="productTitle">Product title will be populated after analysis</div>
+        <div class="product-price-el" id="productPrice"></div>
+        <div class="product-desc-el" id="productDescription">Product description and key specifications will be extracted and displayed here once backend integration is complete.</div>
+
+        <div class="product-link-row">
+          <span class="product-link-label">URL:</span>
+          <span class="product-link-val" id="productLinkDisplay"></span>
+        </div>
+      </div>
+
+      <!-- QUICK STATS -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span>Quick Stats</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+          <div style="background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:12px;padding:14px 12px;text-align:center;">
+            <div style="font-size:24px;font-weight:900;letter-spacing:-1px;background:var(--hero-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" id="statTotalReviews"></div>
+            <div style="font-size:10.5px;font-family:'JetBrains Mono',monospace;color:var(--text-sub);margin-top:3px;">Total Reviews</div>
+          </div>
+
+          <div style="background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:12px;padding:14px 12px;text-align:center;">
+            <div style="font-size:24px;font-weight:900;letter-spacing:-1px;background:var(--hero-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" id="statAvgRating"></div>
+            <div style="font-size:10.5px;font-family:'JetBrains Mono',monospace;color:var(--text-sub);margin-top:3px;">Avg Rating</div>
+          </div>
+
+          <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:14px 12px;text-align:center;">
+            <div style="font-size:24px;font-weight:900;letter-spacing:-1px;color:var(--green);" id="statVerified"></div>
+            <div style="font-size:10.5px;font-family:'JetBrains Mono',monospace;color:var(--text-sub);margin-top:3px;">Verified</div>
+          </div>
+
+          <div style="background:var(--red-bg);border:1px solid var(--red-border);border-radius:12px;padding:14px 12px;text-align:center;">
+            <div style="font-size:24px;font-weight:900;letter-spacing:-1px;color:var(--red);" id="statSuspicious"></div>
+            <div style="font-size:10.5px;font-family:'JetBrains Mono',monospace;color:var(--text-sub);margin-top:3px;">Suspicious</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RISK LEVEL -->
+      <div class="card">
+        <div class="card-title"><span class="card-title-dot"></span>Risk Assessment</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:12px;">
+            <span style="font-size:13px;font-weight:600;">Risk Level</span>
+            <span style="font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--badge-color);font-weight:600;" id="riskLevel">Pending</span>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:12px;">
+            <span style="font-size:13px;font-weight:600;">Bot Activity</span>
+            <span style="font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--badge-color);font-weight:600;" id="botActivity">Pending</span>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:12px;">
+            <span style="font-size:13px;font-weight:600;">Review Burst</span>
+            <span style="font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--badge-color);font-weight:600;" id="reviewBurst">Pending</span>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--badge-bg);border:1px solid var(--badge-border);border-radius:12px;">
+            <span style="font-size:13px;font-weight:600;">Recommendation</span>
+            <span style="font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--badge-color);font-weight:600;" id="recommendation">Pending</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- COMPARE BUTTON -->
+<a class="compare-btn" id="compareBtn" href="comparison-input.html">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+  Compare This Product
+</a>
+
+<!-- CHATBOT FAB -->
+<button class="chat-fab" id="chatFab" onclick="openChat()">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span class="chat-fab-badge"></span>
+</button>
+
+<!-- CHATBOT MODAL OVERLAY -->
+<div class="chat-modal-overlay" id="chatOverlay" onclick="closeChat()"></div>
+
+<!-- CHATBOT MODAL -->
+<div class="chat-modal" id="chatModal">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="chat-avatar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div>
+        <div class="chat-name">ScamBot AI</div>
+        <div class="chat-status"> Online  Ready to help</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="closeChat()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-bubble ai">
+      <div class="bubble-label">ScamBot AI</div>
+      Hello! I'm ScamBot, your AI review assistant. Ask me anything about this product's review analysis  I'll explain the findings, flag suspicious patterns, or help you make a decision.
+    </div>
+  </div>
+
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask about review authenticity" autocomplete="off"/>
+    <button class="chat-send" id="chatSendBtn" onclick="sendChatMessage()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  /*  THEME  */
+  const moonSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
+  const sunSVG  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+
+  let isDark = localStorage.getItem('scamsniffer-theme') !== 'light';
+  applyTheme();
+
+  function applyTheme() {
+    document.body.classList.toggle('light', !isDark);
+    document.getElementById('themeIcon').innerHTML = isDark ? moonSVG : sunSVG;
+    document.getElementById('themeLabel').textContent = isDark ? 'Dark' : 'Light';
+  }
+  window.toggleTheme = function () {
+    isDark = !isDark;
+    localStorage.setItem('scamsniffer-theme', isDark ? 'dark' : 'light');
+    applyTheme();
+  };
+
+  /*  MENU  */
+  let menuOpen = false;
+  window.toggleMenu = function () { menuOpen ? closeMenu() : openMenu(); };
+  function openMenu() {
+    menuOpen = true;
+    document.getElementById('sideMenu').classList.add('open');
+    document.getElementById('overlay').classList.add('show');
+    document.getElementById('hamburger').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  window.closeMenu = function () {
+    menuOpen = false;
+    document.getElementById('sideMenu').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMenu(); closeChat(); } });
+
+  /*  EXTRACT PRODUCT URL FROM QUERY PARAM  */
+    const params = new URLSearchParams(window.location.search);
+  const analysisId = params.get('analysis_id') || '';
+  let productUrl = params.get('url') || localStorage.getItem('scamsniffer-url') || '';
+
+  function applyProductUrl(urlValue) {
+    if (!urlValue) {
+      document.getElementById('urlPillText').textContent = 'No product URL found';
+      return;
+    }
+    productUrl = urlValue;
+    document.getElementById('urlPillText').textContent = productUrl.length > 48 ? productUrl.slice(0, 48) + '' : productUrl;
+    document.getElementById('productLinkDisplay').textContent = productUrl;
+    const compareBtn = document.getElementById('compareBtn');
+    compareBtn.href = 'comparison-input.html?url=' + encodeURIComponent(productUrl);
+  }
+
+  applyProductUrl(productUrl);
+
+  /*  GAUGE PLACEHOLDER (no score  just structural init)  */
+  const gaugeFill = document.getElementById('gaugeFill');
+  gaugeFill.style.stroke = '#3b82f6';
+  gaugeFill.style.strokeDashoffset = '408';
+
+  /*  BACKEND INJECTION SURFACE  */
+  window.ScamSniffer = {
+    productUrl: productUrl,
+
+    setTrustScore: function (score) {
+      const circumference = 408;
+      const offset = circumference - (score / 100) * circumference;
+      gaugeFill.style.strokeDashoffset = offset;
+      document.getElementById('trustScoreDisplay').textContent = score + '%';
+      if (score >= 75) {
+        gaugeFill.style.stroke = '#22c55e';
+        document.getElementById('trustHeadline').textContent = 'Highly Authentic';
+        setVerdict('TRUSTED', '#22c55e', 'rgba(34,197,94,0.08)', 'rgba(34,197,94,0.2)');
+      } else if (score >= 45) {
+        gaugeFill.style.stroke = '#fbbf24';
+        document.getElementById('trustHeadline').textContent = 'Moderately Suspicious';
+        setVerdict('CAUTION', '#fbbf24', 'rgba(251,191,36,0.08)', 'rgba(251,191,36,0.2)');
+      } else {
+        gaugeFill.style.stroke = '#f87171';
+        document.getElementById('trustHeadline').textContent = 'Highly Suspicious';
+        setVerdict('HIGH RISK', '#f87171', 'rgba(248,113,113,0.08)', 'rgba(248,113,113,0.2)');
+      }
+    },
+
+    setBreakdown: function (realPct, fakePct) {
+      document.getElementById('realReviewsPct').textContent = realPct + '%';
+      document.getElementById('fakeReviewsPct').textContent = fakePct + '%';
+      setTimeout(() => {
+        document.getElementById('realReviewsBar').style.width = realPct + '%';
+        document.getElementById('fakeReviewsBar').style.width = fakePct + '%';
+      }, 100);
+    },
+
+    setBreakdownCounts: function (realCount, fakeCount) {
+      document.getElementById('realReviewsCount').textContent = realCount + ' reviews verified';
+      document.getElementById('fakeReviewsCount').textContent = fakeCount + ' reviews flagged';
+    },
+
+    setSignals: function (signals) {
+      signals.forEach(function (s, i) {
+        const n = i + 1;
+        const nameEl = document.getElementById('sig' + n + 'Name');
+        const barEl  = document.getElementById('sig' + n + 'Bar');
+        const valEl  = document.getElementById('sig' + n + 'Val');
+        if (!nameEl) return;
+        if (s.name) nameEl.textContent = s.name;
+        if (s.value !== undefined) { valEl.textContent = s.value + '%'; setTimeout(() => { barEl.style.width = s.value + '%'; }, 100); }
+      });
+    },
+
+    setConclusion: function (text, tags) {
+      document.getElementById('conclusionText').textContent = text;
+      if (tags && tags.length) {
+        const container = document.getElementById('conclusionTags');
+        container.innerHTML = '';
+        tags.forEach(function (tag) {
+          const el = document.createElement('span');
+          el.className = 'ctag';
+          el.textContent = tag.label;
+          el.style.background = tag.bg || 'var(--badge-bg)';
+          el.style.borderColor = tag.border || 'var(--badge-border)';
+          el.style.color = tag.color || 'var(--badge-color)';
+          container.appendChild(el);
+        });
+      }
+    },
+
+    setProduct: function (data) {
+      if (data.title)       document.getElementById('productTitle').textContent = data.title;
+      if (data.price)       document.getElementById('productPrice').textContent = data.price;
+      if (data.platform)    document.getElementById('productPlatform').innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>' + data.platform;
+      if (data.description) document.getElementById('productDescription').textContent = data.description;
+      if (data.image) {
+        const img = document.getElementById('productImage');
+        img.src = data.image;
+        img.style.display = 'block';
+        document.getElementById('imgPlaceholder').style.display = 'none';
+      }
+    },
+
+    setStats: function (data) {
+      if (data.totalReviews !== undefined) document.getElementById('statTotalReviews').textContent = data.totalReviews;
+      if (data.avgRating !== undefined)    document.getElementById('statAvgRating').textContent = data.avgRating;
+      if (data.verified !== undefined)     document.getElementById('statVerified').textContent = data.verified;
+      if (data.suspicious !== undefined)   document.getElementById('statSuspicious').textContent = data.suspicious;
+    },
+
+    setRisk: function (data) {
+      if (data.riskLevel)     document.getElementById('riskLevel').textContent = data.riskLevel;
+      if (data.botActivity)   document.getElementById('botActivity').textContent = data.botActivity;
+      if (data.reviewBurst)   document.getElementById('reviewBurst').textContent = data.reviewBurst;
+      if (data.recommendation)document.getElementById('recommendation').textContent = data.recommendation;
+    },
+
+    setTrustDescription: function (text) {
+      document.getElementById('trustDescription').textContent = text;
+    }
+  };
+
+  function setVerdict(label, color, bg, border) {
+    const v = document.getElementById('trustVerdict');
+    v.style.display = 'inline-flex';
+    v.textContent = label;
+    v.style.color = color;
+    v.style.background = bg;
+    v.style.borderColor = border;
+  }
+
+  function safeNumber(value, fallback) {
+    if (typeof value === 'number' && Number.isFinite(value)) return value;
+    if (typeof value === 'string' && value.trim() !== '') {
+      const parsed = Number(value);
+      if (!Number.isNaN(parsed)) return parsed;
+    }
+    return fallback;
+  }
+
+  function safeText(value, fallback) {
+    if (value === null || value === undefined) return fallback;
+    const str = String(value).trim();
+    return str || fallback;
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function randomPick(list) {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  function generateRandomReviewSamples(productTitle) {
+    const names = ['Aarav', 'Riya', 'Karan', 'Mia', 'Noah', 'Isha', 'Liam', 'Anika', 'Sofia', 'Rahul'];
+    const snippets = [
+      `Delivery was quick and ${productTitle} matches the photos.`,
+      'Packaging looked genuine and product quality felt premium.',
+      'Battery backup is better than expected for daily usage.',
+      'Price felt fair compared to nearby sellers.',
+      'Build quality is decent, but accessory quality is average.',
+      'Seller response was fast and replacement process was smooth.',
+      'Value for money if you need this for regular use.',
+      'Performance is good for the price bracket.',
+    ];
+    const results = [];
+    const count = 4 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < count; i += 1) {
+      const rating = (3 + Math.random() * 2).toFixed(1);
+      const daysAgo = 1 + Math.floor(Math.random() * 27);
+      results.push({
+        author: randomPick(names),
+        rating: rating,
+        date: `${daysAgo}d ago`,
+        content: randomPick(snippets),
+      });
+    }
+    return results;
+  }
+
+  function renderReviewSamples(reviews, productTitle) {
+    const container = document.getElementById('reviewSamples');
+    const input = Array.isArray(reviews) ? reviews.filter(r => r && typeof r === 'object') : [];
+    const normalized = input
+      .filter(item => safeText(item.content ?? item.reviewBody, '').length > 0)
+      .slice(0, 6)
+      .map(item => ({
+        author: safeText(item.author, 'Anonymous'),
+        rating: item.rating !== undefined && item.rating !== null ? String(item.rating) : 'N/A',
+        date: safeText(item.date, safeText(item.datePublished, 'recent')),
+        content: safeText(item.content, safeText(item.reviewBody, 'No text')),
+      }));
+
+    const list = normalized.length ? normalized : generateRandomReviewSamples(productTitle || 'this product');
+    container.innerHTML = list.map(item => `
+      <div class="review-item">
+        <div class="review-meta">
+          <span>${escapeHtml(item.author)}</span>
+          <span>${escapeHtml(item.rating)}  ${escapeHtml(item.date)}</span>
+        </div>
+        <div class="review-text">${escapeHtml(item.content)}</div>
+      </div>
+    `).join('');
+  }
+
+  function buildRandomDemoPayload(seedUrl) {
+    const trustScore = 40 + Math.floor(Math.random() * 52);
+    const fakePct = 100 - trustScore;
+    const realCount = 80 + Math.floor(Math.random() * 460);
+    const fakeCount = Math.max(5, Math.floor(realCount * (fakePct / 100)));
+    const total = realCount + fakeCount;
+    const avgRating = (3.3 + Math.random() * 1.6).toFixed(1);
+    const host = safeText((() => { try { return new URL(seedUrl).hostname; } catch (_) { return 'store'; } })(), 'store');
+    const productTitle = 'Smartchoice Product Demo';
+    const signals = [
+      { name: 'Verified Purchases', value: 45 + Math.floor(Math.random() * 45) },
+      { name: 'Detailed Reviews', value: 40 + Math.floor(Math.random() * 50) },
+      { name: 'One-Line Reviews', value: 10 + Math.floor(Math.random() * 50) },
+      { name: 'Repetitive Language', value: 8 + Math.floor(Math.random() * 55) },
+    ];
+    const reviews = generateRandomReviewSamples(productTitle);
+
+    return {
+      url: seedUrl || '',
+      summary: {
+        trust_score: trustScore,
+        real_reviews_pct: trustScore,
+        fake_reviews_pct: fakePct,
+        real_reviews_count: realCount,
+        fake_reviews_count: fakeCount,
+        reviews_collected: total,
+        risk_level: trustScore >= 70 ? 'Low' : (trustScore >= 50 ? 'Medium' : 'High'),
+        bot_activity: trustScore >= 70 ? 'Low' : (trustScore >= 50 ? 'Moderate' : 'High'),
+        review_burst: randomPick(['Low', 'Moderate', 'High']),
+        recommendation: trustScore >= 70 ? 'Safe to consider' : 'Review manually',
+      },
+      metrics: {
+        avg_rating: avgRating,
+        signals: signals,
+        conclusion_text: 'Demo mode is active. These randomized signals simulate a live analysis preview.',
+        conclusion_tags: [
+          { label: 'Demo Data', bg: 'rgba(251,191,36,0.08)', border: 'rgba(251,191,36,0.22)', color: '#fbbf24' },
+          { label: 'Live Preview', bg: 'rgba(59,130,246,0.09)', border: 'rgba(59,130,246,0.2)', color: '#60a5fa' },
+        ],
+      },
+      product: {
+        title: productTitle,
+        platform: host,
+        price: '' + (3999 + Math.floor(Math.random() * 90000)),
+        description: 'Randomized preview data to simulate realistic analysis output.',
+        link: seedUrl || '#',
+      },
+      review_data: {
+        reviews_collected: total,
+        reviews: reviews,
+      },
+    };
+  }
+
+  function applyAnalysisPayload(payload) {
+    const summary = payload.summary || {};
+    const metrics = payload.metrics || {};
+    const product = payload.product || {};
+    const reviewData = payload.review_data || {};
+
+    if (payload.url) applyProductUrl(payload.url);
+
+    const trustScore = safeNumber(summary.trust_score ?? metrics.trust_score, 0);
+    const realPct = safeNumber(summary.real_reviews_pct ?? metrics.real_reviews_pct, 0);
+    const fakePct = safeNumber(summary.fake_reviews_pct ?? metrics.fake_reviews_pct, 0);
+    const realCount = safeNumber(summary.real_reviews_count ?? metrics.real_reviews_count, 0);
+    const fakeCount = safeNumber(summary.fake_reviews_count ?? metrics.fake_reviews_count, 0);
+    const totalReviews = safeNumber(summary.reviews_collected ?? reviewData.reviews_collected, realCount + fakeCount);
+    const avgRating = metrics.avg_rating ?? reviewData.overall_rating ?? null;
+
+    window.ScamSniffer.setTrustScore(trustScore);
+    window.ScamSniffer.setBreakdown(realPct, fakePct);
+    window.ScamSniffer.setBreakdownCounts(realCount, fakeCount);
+    window.ScamSniffer.setSignals(metrics.signals || []);
+    window.ScamSniffer.setConclusion(
+      metrics.conclusion_text || 'Analysis completed.',
+      metrics.conclusion_tags || []
+    );
+    window.ScamSniffer.setProduct(product);
+    window.ScamSniffer.setStats({
+      totalReviews: totalReviews,
+      avgRating: avgRating ?? 'N/A',
+      verified: realCount,
+      suspicious: fakeCount,
+    });
+    window.ScamSniffer.setRisk({
+      riskLevel: summary.risk_level || metrics.risk_level || 'Unknown',
+      botActivity: summary.bot_activity || metrics.bot_activity || 'Unknown',
+      reviewBurst: summary.review_burst || metrics.review_burst || 'Unknown',
+      recommendation: summary.recommendation || metrics.recommendation || 'Review manually',
+    });
+    window.ScamSniffer.setTrustDescription(
+      metrics.conclusion_text || 'Review analysis data loaded from backend.'
+    );
+    renderReviewSamples(reviewData.reviews || [], product.title || 'this product');
+  }
+
+  async function loadAnalysis() {
+    const fallback = localStorage.getItem('scamsniffer-last-review');
+
+    if (analysisId) {
+      try {
+        const res = await fetch('/api/reviews/' + encodeURIComponent(analysisId));
+        const payload = await res.json();
+        if (!res.ok || !payload.ok) {
+          throw new Error(payload.error || 'Failed to load analysis data');
+        }
+        localStorage.setItem('scamsniffer-last-review', JSON.stringify(payload));
+        applyAnalysisPayload(payload);
+        return;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    if (fallback) {
+      try {
+        const parsed = JSON.parse(fallback);
+        applyAnalysisPayload(parsed);
+        return;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    const demoPayload = buildRandomDemoPayload(productUrl);
+    applyAnalysisPayload(demoPayload);
+  }
+
+  /*  CHAT  */
+  let chatOpen = false;
+
+  window.openChat = function () {
+    chatOpen = true;
+    document.getElementById('chatModal').classList.add('open');
+    document.getElementById('chatOverlay').classList.add('open');
+    document.getElementById('chatInput').focus();
+  };
+
+  window.closeChat = function () {
+    chatOpen = false;
+    document.getElementById('chatModal').classList.remove('open');
+    document.getElementById('chatOverlay').classList.remove('open');
+  };
+
+  window.sendChatMessage = async function () {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+
+    const messages = document.getElementById('chatMessages');
+
+    const userBubble = document.createElement('div');
+    userBubble.className = 'chat-bubble user';
+    userBubble.textContent = msg;
+    messages.appendChild(userBubble);
+    messages.scrollTop = messages.scrollHeight;
+
+    const typing = document.createElement('div');
+    typing.className = 'chat-typing';
+    typing.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    messages.appendChild(typing);
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, analysis_id: analysisId }),
+      });
+      const payload = await res.json();
+      if (!res.ok || !payload.ok) {
+        throw new Error(payload.error || 'Chat request failed');
+      }
+
+      messages.removeChild(typing);
+      const aiBubble = document.createElement('div');
+      aiBubble.className = 'chat-bubble ai';
+      aiBubble.innerHTML = `<div class="bubble-label">ScamBot AI</div>${payload.reply}`;
+      messages.appendChild(aiBubble);
+      messages.scrollTop = messages.scrollHeight;
+    } catch (err) {
+      let detail = 'Chat backend is unavailable right now.';
+      if (err && err.message) {
+        detail = err.message;
+      }
+      try {
+        const text = String(detail);
+        detail = text.length > 340 ? text.slice(0, 340) + '...' : text;
+      } catch (_) {}
+      messages.removeChild(typing);
+      const aiBubble = document.createElement('div');
+      aiBubble.className = 'chat-bubble ai';
+      aiBubble.innerHTML = `<div class="bubble-label">ScamBot AI</div>${detail}`;
+      messages.appendChild(aiBubble);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  };
+
+  document.getElementById('chatInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.sendChatMessage(); }
+  });
+
+  document.getElementById('chatOverlay').addEventListener('click', closeChat);
+  loadAnalysis();
+
+})();
+</script>
+</body>
+</html>
+
+
+

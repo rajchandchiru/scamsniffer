@@ -1,0 +1,883 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scamsniffer - Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { min-height: 100vh; width: 100%; overflow-x: hidden; }
+
+    :root {
+      --bg:                  #050508;
+      --card-bg:             #0c1220;
+      --card-bg2:            #080d18;
+      --card-border:         rgba(59,130,246,0.18);
+      --card-shadow:         0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+      --text:                #e2e8f0;
+      --text-muted:          #475569;
+      --text-faint:          #1e3a5f;
+      --input-bg:            rgba(255,255,255,0.04);
+      --input-border:        rgba(255,255,255,0.09);
+      --input-focus-border:  #3b82f6;
+      --input-focus-shadow:  rgba(59,130,246,0.15);
+      --input-color:         #e2e8f0;
+      --input-placeholder:   #2a4a6e;
+      --label:               #475569;
+      --divider:             rgba(255,255,255,0.07);
+      --divider-text:        #1e3a5f;
+      --sec-btn-border:      rgba(255,255,255,0.1);
+      --sec-btn-color:       #475569;
+      --sec-btn-hover-bg:    rgba(255,255,255,0.05);
+      --sec-btn-hover-border:rgba(255,255,255,0.2);
+      --sec-btn-hover-color: #94a3b8;
+      --login-btn-bg:        transparent;
+      --login-btn-border:    rgba(59,130,246,0.2);
+      --login-btn-color:     #60a5fa;
+      --login-btn-hover-bg:  rgba(59,130,246,0.08);
+      --login-btn-hover-border:rgba(59,130,246,0.4);
+      --footer-color:        #1e3a5f;
+      --footer-link:         #2563eb;
+      --badge-bg:            rgba(59,130,246,0.08);
+      --badge-border:        rgba(59,130,246,0.2);
+      --badge-color:         #60a5fa;
+      --eye-color:           #475569;
+      --eye-hover:           #60a5fa;
+      --eye-hover-bg:        rgba(59,130,246,0.1);
+      --toggle-bg:           rgba(255,255,255,0.07);
+      --toggle-border:       rgba(255,255,255,0.1);
+      --toggle-color:        #94a3b8;
+      --toggle-shadow:       0 4px 14px rgba(0,0,0,0.3);
+      --pill-bg:             rgba(59,130,246,0.25);
+      --knob-color:          #60a5fa;
+      --knob-left:           3px;
+      --grid-color:          rgba(59,130,246,0.05);
+      --orb1:                rgba(59,130,246,0.12);
+      --orb2:                rgba(29,78,216,0.09);
+      --top-line:            linear-gradient(90deg,transparent,#3b82f6,#60a5fa,transparent);
+      --logo-bg:             rgba(59,130,246,0.12);
+      --logo-border:         rgba(59,130,246,0.22);
+      --logo-gradient:       linear-gradient(135deg,#60a5fa 0%,#3b82f6 50%,#818cf8 100%);
+      --check-border:        rgba(255,255,255,0.15);
+      --check-checked-bg:    #2563eb;
+      --optional-color:      #334155;
+      --strength-bg:         rgba(255,255,255,0.06);
+    }
+
+    body.light {
+      --bg:                  #f0f4ff;
+      --card-bg:             #ffffff;
+      --card-bg2:            #f8faff;
+      --card-border:         rgba(37,99,235,0.12);
+      --card-shadow:         0 20px 60px rgba(37,99,235,0.1), 0 4px 20px rgba(0,0,0,0.06);
+      --text:                #0f172a;
+      --text-muted:          #64748b;
+      --text-faint:          #94a3b8;
+      --input-bg:            #f8faff;
+      --input-border:        rgba(37,99,235,0.15);
+      --input-focus-border:  #2563eb;
+      --input-focus-shadow:  rgba(37,99,235,0.12);
+      --input-color:         #0f172a;
+      --input-placeholder:   #cbd5e1;
+      --label:               #64748b;
+      --divider:             rgba(37,99,235,0.1);
+      --divider-text:        #94a3b8;
+      --sec-btn-border:      rgba(37,99,235,0.15);
+      --sec-btn-color:       #64748b;
+      --sec-btn-hover-bg:    #f0f6ff;
+      --sec-btn-hover-border:rgba(37,99,235,0.3);
+      --sec-btn-hover-color: #374151;
+      --login-btn-bg:        #eff6ff;
+      --login-btn-border:    rgba(37,99,235,0.2);
+      --login-btn-color:     #2563eb;
+      --login-btn-hover-bg:  #dbeafe;
+      --login-btn-hover-border:rgba(37,99,235,0.35);
+      --footer-color:        #94a3b8;
+      --footer-link:         #2563eb;
+      --badge-bg:            #eff6ff;
+      --badge-border:        rgba(37,99,235,0.2);
+      --badge-color:         #1d4ed8;
+      --eye-color:           #94a3b8;
+      --eye-hover:           #2563eb;
+      --eye-hover-bg:        rgba(37,99,235,0.08);
+      --toggle-bg:           #ffffff;
+      --toggle-border:       rgba(37,99,235,0.2);
+      --toggle-color:        #1e40af;
+      --toggle-shadow:       0 4px 14px rgba(37,99,235,0.15);
+      --pill-bg:             #2563eb;
+      --knob-color:          #ffffff;
+      --knob-left:           19px;
+      --grid-color:          rgba(37,99,235,0.06);
+      --orb1:                rgba(59,130,246,0.12);
+      --orb2:                rgba(99,102,241,0.08);
+      --top-line:            linear-gradient(90deg,transparent,#2563eb,#3b82f6,transparent);
+      --logo-bg:             #eff6ff;
+      --logo-border:         rgba(37,99,235,0.2);
+      --logo-gradient:       linear-gradient(135deg,#1d4ed8 0%,#2563eb 60%,#4f46e5 100%);
+      --check-border:        rgba(37,99,235,0.25);
+      --check-checked-bg:    #2563eb;
+      --optional-color:      #94a3b8;
+      --strength-bg:         rgba(37,99,235,0.06);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 80px 20px 40px;
+      position: relative;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    .bg-grid {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+    .orb {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      transition: background 0.4s;
+    }
+    .orb-1 { width: 500px; height: 500px; top: -120px; left: -80px; background: radial-gradient(circle, var(--orb1) 0%, transparent 65%); }
+    .orb-2 { width: 380px; height: 380px; bottom: -80px; right: -60px; background: radial-gradient(circle, var(--orb2) 0%, transparent 65%); }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 300;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: 50px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
+      background: var(--toggle-bg); color: var(--toggle-color);
+      border: 1px solid var(--toggle-border);
+      box-shadow: var(--toggle-shadow);
+      transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .theme-toggle:hover { filter: brightness(1.12); }
+    .toggle-icon { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .toggle-pill { width: 36px; height: 20px; border-radius: 20px; position: relative; background: var(--pill-bg); transition: background 0.3s; flex-shrink: 0; }
+    .toggle-knob { width: 14px; height: 14px; border-radius: 50%; background: var(--knob-color); position: absolute; top: 3px; left: var(--knob-left); transition: left 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.3s; }
+
+    /* Card */
+    .register-card {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 520px;
+      background: linear-gradient(160deg, var(--card-bg) 0%, var(--card-bg2) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 44px 40px;
+      box-shadow: var(--card-shadow);
+      animation: cardIn 0.55s cubic-bezier(0.16,1,0.3,1) both;
+      transition: background 0.4s, border-color 0.4s, box-shadow 0.4s;
+    }
+    @keyframes cardIn { from { opacity:0; transform: translateY(28px) scale(0.97); } to { opacity:1; transform: none; } }
+
+    .card-top-line {
+      position: absolute; top: 0; left: 15%; right: 15%;
+      height: 2px; border-radius: 0 0 4px 4px;
+      background: var(--top-line); transition: background 0.4s;
+    }
+
+    /* Logo */
+    .logo-section { text-align: center; margin-bottom: 28px; }
+    .logo-icon-wrap {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 60px; height: 60px; border-radius: 16px; margin-bottom: 12px;
+      background: var(--logo-bg); border: 1px solid var(--logo-border);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .logo-title {
+      font-size: 24px; font-weight: 800; letter-spacing: -0.8px; line-height: 1;
+      background: var(--logo-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .logo-sub { font-size: 13px; color: var(--text-muted); margin-top: 5px; transition: color 0.4s; }
+    .page-badge {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+      border-radius: 20px; padding: 4px 12px; font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace; letter-spacing: 0.03em;
+      background: var(--badge-bg); border: 1px solid var(--badge-border);
+      color: var(--badge-color); transition: all 0.4s;
+    }
+
+    /* Section Divider */
+    .section-divider {
+      display: flex; align-items: center; gap: 10px; margin: 20px 0 18px;
+    }
+    .section-line { flex: 1; height: 1px; background: var(--divider); transition: background 0.4s; }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; transition: color 0.4s; }
+
+    /* Row Layout */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+
+    /* Form Fields */
+    .field-group { margin-bottom: 16px; }
+    .field-label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; margin-bottom: 7px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--label); transition: color 0.4s;
+    }
+    .optional-tag {
+      font-size: 10px; font-weight: 400; letter-spacing: 0.02em; text-transform: none;
+      color: var(--optional-color); font-family: 'JetBrains Mono', monospace;
+      background: rgba(255,255,255,0.04); border-radius: 4px; padding: 1px 5px;
+      transition: color 0.4s, background 0.4s;
+    }
+    body.light .optional-tag { background: rgba(0,0,0,0.04); }
+
+    .input-wrap { position: relative; }
+    .field-input {
+      width: 100%; padding: 11px 14px; border-radius: 10px;
+      font-size: 14px; font-family: 'Outfit', sans-serif;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      color: var(--input-color); outline: none;
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, color 0.4s;
+    }
+    .field-input::placeholder { color: var(--input-placeholder); }
+    .field-input:focus { border-color: var(--input-focus-border); box-shadow: 0 0 0 3px var(--input-focus-shadow); }
+    .field-input.pw-input { padding-right: 44px; }
+    .field-input.err { border-color: rgba(239,68,68,0.55) !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important; }
+    .field-input.ok  { border-color: rgba(34,197,94,0.45) !important; }
+
+    .field-msg {
+      font-size: 11.5px; margin-top: 5px; display: none;
+      align-items: center; gap: 4px; line-height: 1.3;
+    }
+    .field-msg.show { display: flex; }
+    .field-msg.error { color: #f87171; }
+    .field-msg.success { color: #4ade80; }
+    body.light .field-msg.error { color: #dc2626; }
+    body.light .field-msg.success { color: #16a34a; }
+
+    /* Eye Button */
+    .eye-btn {
+      position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      padding: 4px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--eye-color); transition: color 0.2s, background 0.2s;
+    }
+    .eye-btn:hover { color: var(--eye-hover); background: var(--eye-hover-bg); }
+
+    /* Password Strength */
+    .strength-wrap { margin-top: 8px; display: none; }
+    .strength-wrap.show { display: block; }
+    .strength-bars { display: flex; gap: 4px; margin-bottom: 5px; }
+    .strength-bar {
+      flex: 1; height: 3px; border-radius: 2px;
+      background: var(--strength-bg); transition: background 0.3s;
+    }
+    .strength-bar.weak   { background: #ef4444; }
+    .strength-bar.fair   { background: #f59e0b; }
+    .strength-bar.good   { background: #3b82f6; }
+    .strength-bar.strong { background: #22c55e; }
+    .strength-text { font-size: 11px; color: var(--text-muted); transition: color 0.3s; }
+    .strength-text.weak   { color: #f87171; }
+    .strength-text.fair   { color: #fbbf24; }
+    .strength-text.good   { color: #60a5fa; }
+    .strength-text.strong { color: #4ade80; }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex; align-items: flex-start; gap: 11px;
+      margin: 18px 0 4px; cursor: pointer;
+    }
+    .custom-checkbox {
+      width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; margin-top: 1px;
+      border: 1.5px solid var(--check-border);
+      background: var(--input-bg); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .custom-checkbox.checked { background: var(--check-checked-bg); border-color: var(--check-checked-bg); }
+    .custom-checkbox svg { display: none; }
+    .custom-checkbox.checked svg { display: block; }
+    .custom-checkbox.err-check { border-color: rgba(239,68,68,0.6) !important; }
+    .checkbox-label { font-size: 13px; color: var(--text-muted); line-height: 1.5; cursor: pointer; transition: color 0.4s; }
+    .checkbox-label a { color: var(--footer-link); text-decoration: none; font-weight: 500; }
+    .checkbox-label a:hover { text-decoration: underline; }
+
+    /* Error Banner */
+    .error-banner {
+      display: none; align-items: flex-start; gap: 10px;
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;
+      animation: errIn 0.3s ease;
+    }
+    .error-banner.show { display: flex; }
+    body.light .error-banner { background: #fef2f2; border-color: rgba(239,68,68,0.3); }
+    .banner-icon { flex-shrink: 0; margin-top: 1px; color: #f87171; }
+    body.light .banner-icon { color: #ef4444; }
+    .banner-text { font-size: 13.5px; line-height: 1.4; color: #fca5a5; }
+    body.light .banner-text { color: #dc2626; }
+    @keyframes errIn { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: none; } }
+
+    /* Success Banner */
+    .success-banner {
+      display: none; flex-direction: column; align-items: center;
+      text-align: center; padding: 28px 20px; gap: 12px;
+    }
+    .success-banner.show { display: flex; }
+    .success-icon-wrap {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(34,197,94,0.1); border: 2px solid rgba(34,197,94,0.3);
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn { from { transform: scale(0.5); opacity:0; } to { transform: scale(1); opacity:1; } }
+    .success-title { font-size: 20px; font-weight: 700; color: var(--text); }
+    .success-sub { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 10px; flex-direction: column; margin-top: 20px; }
+    @media (min-width: 400px) { .btn-row { flex-direction: row; } }
+
+    .btn-primary {
+      flex: 1; padding: 13px; border-radius: 10px; border: none;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      font-family: 'Outfit', sans-serif; letter-spacing: 0.01em;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white; box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.5); }
+    .btn-primary:active:not(:disabled) { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    .btn-secondary {
+      flex: 1; padding: 12px; border-radius: 10px;
+      font-size: 14.5px; font-weight: 500; cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid var(--sec-btn-border);
+      color: var(--sec-btn-color); transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover:not(:disabled) { background: var(--sec-btn-hover-bg); border-color: var(--sec-btn-hover-border); color: var(--sec-btn-hover-color); }
+    .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Divider */
+    .divider { display: flex; align-items: center; gap: 12px; margin: 22px 0; }
+    .divider-line { flex: 1; height: 1px; background: var(--divider); transition: background 0.4s; }
+    .divider-text { font-size: 12px; white-space: nowrap; color: var(--divider-text); transition: color 0.4s; }
+
+    /* Login Link */
+    .login-link-btn {
+      display: flex; width: 100%; padding: 12.5px; border-radius: 10px;
+      text-align: center; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 500; text-decoration: none;
+      font-family: 'Outfit', sans-serif;
+      background: var(--login-btn-bg); border: 1px solid var(--login-btn-border);
+      color: var(--login-btn-color); transition: background 0.2s, border-color 0.2s;
+    }
+    .login-link-btn:hover { background: var(--login-btn-hover-bg); border-color: var(--login-btn-hover-border); }
+
+    /* Footer */
+    .card-footer { text-align: center; margin-top: 20px; font-size: 11.5px; line-height: 1.7; color: var(--footer-color); transition: color 0.4s; }
+    .footer-link { color: var(--footer-link); text-decoration: none; }
+    .footer-link:hover { text-decoration: underline; }
+
+    /* Spinner */
+    .spinner { width: 17px; height: 17px; animation: spin 0.8s linear infinite; display: none; flex-shrink: 0; }
+    .spinner.show { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 560px) {
+      body { padding: 72px 16px 32px; }
+      .register-card { padding: 36px 22px; }
+      .logo-title { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="toggle-icon" id="themeIcon">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+    </span>
+    <span id="themeLabel">Dark</span>
+    <div class="toggle-pill">
+      <div class="toggle-knob" id="toggleKnob"></div>
+    </div>
+  </button>
+
+  <!-- Card -->
+  <div class="register-card">
+    <div class="card-top-line"></div>
+
+    <!-- Logo -->
+    <div class="logo-section">
+      <div class="logo-icon-wrap">
+         <img src="logo1.png" alt="Scamsniffer Logo" width="60" height="65" 
+         style="object-fit: contain;" />
+      </div>
+
+      <div class="logo-title">Scamsniffer</div>
+      <div class="logo-sub">Fake Review Detection Platform</div>
+      <div class="page-badge"> Create Your Account</div>
+    </div>
+
+    <!-- Error Banner -->
+    <div class="error-banner" id="errorBanner">
+      <div class="banner-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <p class="banner-text" id="bannerText">Please fix the errors below before continuing.</p>
+    </div>
+
+    <!-- Success State -->
+    <div class="success-banner" id="successBanner">
+      <div class="success-icon-wrap">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+      </div>
+      <div class="success-title">Account Created!</div>
+      <div class="success-sub">Welcome to Scamsniffer. Your account has been created successfully.<br/>Redirecting you to login</div>
+    </div>
+
+    <!-- Form -->
+    <form id="regForm" novalidate>
+
+      <!-- Personal Info -->
+      <div class="section-divider">
+        <div class="section-line"></div>
+        <span class="section-label">Personal Info</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="field-row">
+        <!-- First Name -->
+        <div class="field-group">
+          <label class="field-label" for="firstName">First Name</label>
+          <input class="field-input" type="text" id="firstName" placeholder="John" autocomplete="given-name"
+            oninput="clearErr('firstName')" onblur="validateName('firstName','First name')"/>
+          <div class="field-msg error" id="firstNameMsg">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="firstNameTxt">First name is required.</span>
+          </div>
+        </div>
+        <!-- Last Name -->
+        <div class="field-group">
+          <label class="field-label" for="lastName">Last Name</label>
+          <input class="field-input" type="text" id="lastName" placeholder="Doe" autocomplete="family-name"
+            oninput="clearErr('lastName')" onblur="validateName('lastName','Last name')"/>
+          <div class="field-msg error" id="lastNameMsg">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Last name is required.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field-group">
+        <label class="field-label" for="email">Email Address</label>
+        <input class="field-input" type="email" id="email" placeholder="you@company.com" autocomplete="email"
+          oninput="clearErr('email')" onblur="validateEmail()"/>
+        <div class="field-msg error" id="emailMsg">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="emailErrTxt">Enter a valid email address.</span>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="field-group">
+        <label class="field-label" for="phone">
+          Phone Number
+          <span class="optional-tag">optional</span>
+        </label>
+        <input class="field-input" type="tel" id="phone" placeholder="+60 12 345 6789" autocomplete="tel"
+          oninput="clearErr('phone')" onblur="validatePhone()"/>
+        <div class="field-msg error" id="phoneMsg">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Enter a valid phone number.</span>
+        </div>
+      </div>
+
+      <!-- Account -->
+      <div class="section-divider">
+        <div class="section-line"></div>
+        <span class="section-label">Account Security</span>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Password -->
+      <div class="field-group">
+        <label class="field-label" for="password">Password</label>
+        <div class="input-wrap">
+          <input class="field-input pw-input" type="password" id="password" placeholder="Create a strong password" autocomplete="new-password"
+            oninput="onPasswordInput()" onblur="validatePassword()"/>
+          <button type="button" class="eye-btn" onclick="togglePw('password','eyePw1')" tabindex="-1" aria-label="Toggle password">
+            <svg id="eyePw1" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+              <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <div class="strength-wrap" id="strengthWrap">
+          <div class="strength-bars">
+            <div class="strength-bar" id="sb1"></div>
+            <div class="strength-bar" id="sb2"></div>
+            <div class="strength-bar" id="sb3"></div>
+            <div class="strength-bar" id="sb4"></div>
+          </div>
+          <span class="strength-text" id="strengthText">Too short</span>
+        </div>
+        <div class="field-msg error" id="passwordMsg">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="passwordErrTxt">Password must be at least 8 characters.</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="field-group">
+        <label class="field-label" for="confirmPassword">Confirm Password</label>
+        <div class="input-wrap">
+          <input class="field-input pw-input" type="password" id="confirmPassword" placeholder="Repeat your password" autocomplete="new-password"
+            oninput="clearErr('confirmPassword')" onblur="validateConfirm()"/>
+          <button type="button" class="eye-btn" onclick="togglePw('confirmPassword','eyePw2')" tabindex="-1" aria-label="Toggle confirm password">
+            <svg id="eyePw2" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+              <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <div class="field-msg error" id="confirmPasswordMsg">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="confirmErrTxt">Passwords do not match.</span>
+        </div>
+      </div>
+
+      <!-- Checkbox -->
+      <div class="section-divider" style="margin-top:8px;">
+        <div class="section-line"></div>
+        <span class="section-label">Agreement</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="checkbox-group" onclick="toggleCheck()" id="checkboxGroup">
+        <div class="custom-checkbox" id="customCheck">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        </div>
+        <label class="checkbox-label">
+          I have read and agree to the
+          <a href="#" onclick="return false;">Rules &amp; Regulations</a> and
+          <a href="#" onclick="return false;">Privacy Policy</a> of Scamsniffer.
+          This field is mandatory.
+        </label>
+      </div>
+      <div class="field-msg error" id="checkMsg" style="margin-top:6px; margin-bottom:4px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>You must accept the rules and regulations to continue.</span>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button type="button" class="btn-secondary" id="cancelBtn" onclick="handleCancel()">Cancel</button>
+        <button type="submit" class="btn-primary" id="registerBtn">
+          <svg class="spinner" id="spinner" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+            <path d="M12 2a10 10 0 0110 10" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span id="regBtnLabel">Create Account</span>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">Already have an account?</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <a href="scamsniffer-login.html" class="login-link-btn">Sign in instead -></a>
+
+    <div class="card-footer">
+      Your data is protected by enterprise-grade encryption.<br/>
+      <a href="#" class="footer-link">Terms of Service</a> &nbsp;&nbsp;
+      <a href="#" class="footer-link">Privacy Policy</a> &nbsp;&nbsp;
+      <a href="#" class="footer-link">Cookie Policy</a>
+    </div>
+  </div>
+
+  <script>
+  const sunSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+  const moonSVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
+
+  let isDark = localStorage.getItem('scamsniffer-theme') !== 'light';
+  let checked = false;
+  const pwState = { password: false, confirmPassword: false };
+
+  function applyTheme() {
+    document.body.classList.toggle('light', !isDark);
+    document.getElementById('themeIcon').innerHTML = isDark ? moonSVG : sunSVG;
+    document.getElementById('themeLabel').textContent = isDark ? 'Dark' : 'Light';
+  }
+
+  function toggleTheme() {
+    isDark = !isDark;
+    localStorage.setItem('scamsniffer-theme', isDark ? 'dark' : 'light');
+    applyTheme();
+  }
+
+  function showErrorBanner(text) {
+    document.getElementById('bannerText').textContent = text;
+    document.getElementById('errorBanner').classList.add('show');
+  }
+
+  function hideErrorBanner() {
+    document.getElementById('errorBanner').classList.remove('show');
+  }
+
+  function clearErr(id) {
+    const input = document.getElementById(id);
+    const msg = document.getElementById(id + 'Msg');
+    if (input) input.classList.remove('err', 'ok');
+    if (msg) msg.classList.remove('show');
+    hideErrorBanner();
+  }
+
+  function markOk(id) {
+    const input = document.getElementById(id);
+    const msg = document.getElementById(id + 'Msg');
+    if (input) {
+      input.classList.remove('err');
+      input.classList.add('ok');
+    }
+    if (msg) msg.classList.remove('show');
+    return true;
+  }
+
+  function markErr(id, text) {
+    const input = document.getElementById(id);
+    const msg = document.getElementById(id + 'Msg');
+    if (input) {
+      input.classList.remove('ok');
+      input.classList.add('err');
+    }
+    if (text && document.getElementById(id + 'Txt')) {
+      document.getElementById(id + 'Txt').textContent = text;
+    }
+    if (msg) msg.classList.add('show');
+    return false;
+  }
+
+  function validateName(id, label) {
+    const value = document.getElementById(id).value.trim();
+    if (!value) return markErr(id, label + ' is required.');
+    if (value.length < 2) return markErr(id, label + ' must be at least 2 characters.');
+    return markOk(id);
+  }
+
+  function validateEmail() {
+    const value = document.getElementById('email').value.trim();
+    if (!value) return markErr('email', 'Email address is required.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return markErr('email', 'Enter a valid email address.');
+    return markOk('email');
+  }
+
+  function validatePhone() {
+    const value = document.getElementById('phone').value.trim();
+    if (!value) return markOk('phone');
+    if (!/^[+\d\s\-().]{7,20}$/.test(value)) return markErr('phone', 'Enter a valid phone number.');
+    return markOk('phone');
+  }
+
+  function validatePassword() {
+    const value = document.getElementById('password').value;
+    if (!value) return markErr('password', 'Password is required.');
+    if (value.length < 8) return markErr('password', 'Password must be at least 8 characters.');
+    return markOk('password');
+  }
+
+  function validateConfirm() {
+    const pw = document.getElementById('password').value;
+    const cpw = document.getElementById('confirmPassword').value;
+    if (!cpw) return markErr('confirmPassword', 'Please confirm your password.');
+    if (pw !== cpw) return markErr('confirmPassword', 'Passwords do not match.');
+    return markOk('confirmPassword');
+  }
+
+  function onPasswordInput() {
+    clearErr('password');
+    const value = document.getElementById('password').value;
+    const wrap = document.getElementById('strengthWrap');
+    wrap.classList.toggle('show', !!value);
+
+    let score = 0;
+    if (value.length >= 8) score++;
+    if (value.length >= 12) score++;
+    if (/[A-Z]/.test(value) && /[a-z]/.test(value)) score++;
+    if (/\d/.test(value) || /[^A-Za-z0-9]/.test(value)) score++;
+
+    score = Math.min(score, 4);
+    const levels = ['weak', 'fair', 'good', 'strong'];
+    const labels = ['Too weak', 'Fair', 'Good', 'Strong'];
+    const level = levels[score > 0 ? score - 1 : 0];
+
+    [1, 2, 3, 4].forEach(i => {
+      const bar = document.getElementById('sb' + i);
+      bar.className = 'strength-bar';
+      if (i <= score) bar.classList.add(level);
+    });
+
+    const text = document.getElementById('strengthText');
+    text.className = 'strength-text ' + level;
+    text.textContent = score === 0 ? 'Too short' : labels[score - 1];
+
+    if (document.getElementById('confirmPassword').value) validateConfirm();
+  }
+
+  function togglePw(inputId, iconId) {
+    pwState[inputId] = !pwState[inputId];
+    document.getElementById(inputId).type = pwState[inputId] ? 'text' : 'password';
+    const icon = pwState[inputId]
+      ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+      : '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+    document.getElementById(iconId).outerHTML = `<svg id="${iconId}" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>`;
+  }
+
+  function toggleCheck() {
+    checked = !checked;
+    const box = document.getElementById('customCheck');
+    box.classList.toggle('checked', checked);
+    if (checked) {
+      box.classList.remove('err-check');
+      document.getElementById('checkMsg').classList.remove('show');
+    }
+  }
+
+  function setLoading(on) {
+    document.getElementById('registerBtn').disabled = on;
+    document.getElementById('cancelBtn').disabled = on;
+    document.getElementById('spinner').classList.toggle('show', on);
+    document.getElementById('regBtnLabel').textContent = on ? 'Creating Account...' : 'Create Account';
+    document.querySelectorAll('.field-input').forEach(el => {
+      el.disabled = on;
+    });
+  }
+
+  function toProfileUser(user) {
+    const createdAt = user && user.created_at ? new Date(user.created_at) : null;
+    const created = createdAt
+      ? createdAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      : '';
+    const joinedFull = createdAt
+      ? createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : '';
+
+    return {
+      firstName: (user && user.first_name) || '',
+      lastName: (user && user.last_name) || '',
+      email: (user && user.email) || '',
+      phone: (user && user.phone) || '',
+      created,
+      joinedFull,
+    };
+  }
+
+  async function submitRegistration(e) {
+    e.preventDefault();
+
+    const v1 = validateName('firstName', 'First name');
+    const v2 = validateName('lastName', 'Last name');
+    const v3 = validateEmail();
+    const v4 = validatePhone();
+    const v5 = validatePassword();
+    const v6 = validateConfirm();
+    let v7 = true;
+
+    if (!checked) {
+      document.getElementById('customCheck').classList.add('err-check');
+      document.getElementById('checkMsg').classList.add('show');
+      v7 = false;
+    }
+
+    if (!v1 || !v2 || !v3 || !v4 || !v5 || !v6 || !v7) {
+      showErrorBanner('Please fix the highlighted errors before continuing.');
+      return;
+    }
+
+    setLoading(true);
+    hideErrorBanner();
+
+    const payload = {
+      first_name: document.getElementById('firstName').value.trim(),
+      last_name: document.getElementById('lastName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      password: document.getElementById('password').value,
+    };
+
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || 'Registration failed.');
+      }
+
+      localStorage.setItem('scamsniffer-session', data.token || '');
+      localStorage.setItem('scamsniffer-user', JSON.stringify(toProfileUser(data.user || {})));
+
+      document.getElementById('regForm').style.display = 'none';
+      document.getElementById('successBanner').classList.add('show');
+      setTimeout(() => {
+        window.location.href = 'profile.html';
+      }, 900);
+    } catch (err) {
+      showErrorBanner(err.message || 'Registration failed.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleCancel() {
+    document.getElementById('regForm').reset();
+    document.querySelectorAll('.field-input').forEach(el => el.classList.remove('err', 'ok'));
+    document.querySelectorAll('.field-msg').forEach(el => el.classList.remove('show'));
+    document.getElementById('strengthWrap').classList.remove('show');
+    document.getElementById('errorBanner').classList.remove('show');
+    document.getElementById('customCheck').classList.remove('checked', 'err-check');
+    document.getElementById('checkMsg').classList.remove('show');
+    document.getElementById('successBanner').classList.remove('show');
+    document.getElementById('regForm').style.display = '';
+    checked = false;
+  }
+
+  document.getElementById('regForm').addEventListener('submit', submitRegistration);
+  applyTheme();
+</script>
+</body>
+</html>
+
+
+
+
